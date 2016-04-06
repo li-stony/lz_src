@@ -279,7 +279,8 @@ class RssFetcher
     begin
       puts 'load feeds ... '
       @feeds.clear
-      url = "https://raw.githubusercontent.com/li-stony/zl_src/master/web2mail/data/feeds.txt"
+      #url = "https://raw.githubusercontent.com/li-stony/zl_src/master/web2mail/data/feeds.txt"
+      url = "https://raw.githubusercontent.com/li-stony/web2mail/master/data/feeds.txt"
       uri = URI(url)
       puts uri  
       http = Net::HTTP.new(uri.host, uri.port)
