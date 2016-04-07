@@ -10,7 +10,7 @@ $mail_fmt = <<MSG_END
 From: rss2mail<%s>
 To: %s
 MIME-Version: 1.0
-Content-type: text/html
+Content-type: text/html; charset=utf-8
 Subject: %s
 <p>%s</p>
 <p>%s</p>
