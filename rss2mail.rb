@@ -318,7 +318,7 @@ if __FILE__ == $0
       $proxy.stop()
     end
   end
-  
+  STDOUT.sync = true 
   $proxy = RssFetcher.new
   $proxy.start()
 end
