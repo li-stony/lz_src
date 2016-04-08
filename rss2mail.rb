@@ -10,7 +10,7 @@ $mail_fmt = <<MSG_END
 From: rss2mail<%s>
 To: %s
 MIME-Version: 1.0
-Content-type: text/html
+Content-Type: text/html; charset=utf-8
 Subject: %s
 <p>%s</p>
 <p>%s</p>
@@ -67,6 +67,7 @@ class MailClient
     begin
       t = Time.at(updated)
       time = t.iso8601
+      title = '=?UTF-8?B?' + Base64.strict_encode64(title) + '?='
       message = $mail_fmt % [@mail_config['user'], @mail_config['to'], title, feedName, time, body]
       if @client != nil
         @client.sendmail(message, @mail_config['user'], @mail_config['to'])
@@ -317,7 +318,7 @@ if __FILE__ == $0
       $proxy.stop()
     end
   end
-  
+  STDOUT.sync = true 
   $proxy = RssFetcher.new
   $proxy.start()
 end
