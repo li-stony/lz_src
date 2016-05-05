@@ -183,7 +183,7 @@ class LzProxy (object):
         
         outgoing = socket.socket()
         # socket.SO_BINDTODEVICE
-        outgoing.setsockopt(socket.SOL_SOCKET, 25, struct.pack('7s', b'wlp4s0'))
+        # outgoing.setsockopt(socket.SOL_SOCKET, 25, struct.pack('7s', b'wlp4s0'))
         #print('bind to:', self.vpn_ip)
         err = outgoing.bind((self.vpn_ip, 0))
         print('bind result:', err)
