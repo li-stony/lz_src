@@ -9,7 +9,7 @@ import time
 import signal
 import re
 
-vpn_ip = "192.168.31.221"
+vpn_ip = "192.168.31.223"
 vpn_dns = "192.168.31.1"
 
 
@@ -112,7 +112,7 @@ class LzProxy (object):
     dnsObj = None
     vpn_ip = ''
     
-    listen_port = 2080
+    listen_port = 1080
     
     server_sock = None
     in_map = dict()
