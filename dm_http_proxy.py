@@ -9,7 +9,7 @@ import time
 import signal
 import re
 
-vpn_ip = "192.168.31.223"
+vpn_ip = "192.168.31.221"
 vpn_dns = "192.168.31.1"
 
 
@@ -317,7 +317,9 @@ if __name__ == '__main__':
     if len(sys.argv) == 3:
         vpn_ip = sys.argv[1]
         vpn_dns = sys.argv[2]
-        
+        print(sys.argv[0], sys.argv[1], sys.argv[2])
+    else:
+        print(sys.argv[0])
     proxy = LzProxy()
     proxy.start(vpn_ip, dns = vpn_dns)
     
