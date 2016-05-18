@@ -20,7 +20,7 @@ public class BlockProgress extends View implements ValueAnimator.AnimatorUpdateL
     public BlockProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
         p1 = new Paint();
-        p1.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        p1.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         p1.setStyle(Paint.Style.FILL);
         p1.setAntiAlias(true);
         p1.setStrokeWidth(2);

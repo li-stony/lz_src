@@ -29,20 +29,65 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin">
         <TextView
+            android:id="@+id/location_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:textColor="@color/colorPrimaryText"
+            android:text="@string/location_title"
+            />
+        <TextView
             android:id="@+id/loc_text_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/location_title"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/colorSecondaryText"
             android:text="@string/location_text"
-            android:textSize="18dp"/>
+            android:textSize="16dp"/>
         <TextView
             android:id="@+id/loc_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/loc_text_id"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/colorSecondaryText"
             android:text="@string/lat_lon_text"
             android:textSize="16dp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorDivider"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+    <RelativeLayout
+        android:id="@+id/weather_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <TextView
+            android:id="@+id/weather_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:textColor="@color/colorPrimaryText"
+            android:text="@string/weather_title"
+            />
+        <TextView
+            android:id="@+id/weather_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_title"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorSecondaryText"
+            android:text="@string/weather_now_fmt"
+            android:textSize="16dp"/>
+
     </RelativeLayout>
 
     <View

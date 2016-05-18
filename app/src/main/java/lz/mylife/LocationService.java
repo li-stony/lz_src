@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -33,7 +35,8 @@ public class LocationService extends Service implements AMapLocationListener {
         super.onCreate();
         mLocationOption = new AMapLocationClientOption();
         mLocationOption.setGpsFirst(true);
-        mLocationOption.setInterval(5000);
+        mLocationOption.setInterval(10000);
+        mLocationOption.setNeedAddress(true);
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationClient = new AMapLocationClient(this);
         mLocationClient.setLocationOption(mLocationOption);
@@ -65,6 +68,9 @@ public class LocationService extends Service implements AMapLocationListener {
     }
 
     private void handleCommand(Intent intent) {
+        if(intent == null) {
+            return;
+        }
         String action = intent.getAction();
         LzLog.d(TAG, "received command: "+action);
         if(action.equals("start")){
@@ -74,6 +80,7 @@ public class LocationService extends Service implements AMapLocationListener {
         } else {
             if(mLocationClient.isStarted()) {
                 mLocationClient.stopLocation();
+                stopSelf();
             }
         }
 
@@ -100,7 +107,7 @@ public class LocationService extends Service implements AMapLocationListener {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    public class LzLocation implements Serializable {
+    public static class LzLocation implements Parcelable {
         public int err;
         public String errMsg;
         public String address;
@@ -113,5 +120,34 @@ public class LocationService extends Service implements AMapLocationListener {
             String str = String.format(fmt, err, errMsg, lat, lon, address);
             return str;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(err);
+            dest.writeString(errMsg);
+            dest.writeDouble(lat);
+            dest.writeDouble(lon);
+            dest.writeString(address);
+        }
+        public static final Creator<LzLocation> CREATOR = new Creator() {
+            public LzLocation createFromParcel(Parcel in) {
+                LzLocation loc = new LzLocation();
+                loc.err = in.readInt();
+                loc.errMsg = in.readString();
+                loc.lat = in.readDouble();
+                loc.lon = in.readDouble();
+                loc.address = in.readString();
+                return loc;
+            }
+
+            public LzLocation[] newArray(int size) {
+                return new LzLocation[size];
+            }
+        };
     }
 }

@@ -14,11 +14,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service android:name=".LocationService"
+            android:exported="false"/>
+
+        <service android:name=".WeatherService"
+                 android:exported="false" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="82830c09dd77a2fd8400f0c9100b24aa" />
-        <service android:name=".LocationService"
-            android:exported="false"/>
         <service android:name="com.amap.api.location.APSService"></service>
     </application>
 
