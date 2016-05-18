@@ -6,15 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.thinkpage.lib.api.TPCity;
-import com.thinkpage.lib.api.TPListeners;
-import com.thinkpage.lib.api.TPWeatherDaily;
-import com.thinkpage.lib.api.TPWeatherManager;
-import com.thinkpage.lib.api.TPWeatherNow;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -25,7 +32,7 @@ import lz.util.LzLog;
 /**
  * Created by cussyou on 2016-05-18.
  */
-public class WeatherService extends Service implements TPListeners.TPWeatherNowListener, TPListeners.TPWeatherDailyListener {
+public class WeatherService extends Service  {
     private String TAG = this.getClass().getSimpleName();
 
     public static final String ACTION_LIVE_WEATHER_GOT = "live_weather_got";
@@ -35,11 +42,8 @@ public class WeatherService extends Service implements TPListeners.TPWeatherNowL
     public static final String ACTION_PREDICT_WEATHER = "predict_weather";
     public static final String ACTION_STOP = "stop";
 
-    TPWeatherManager weatherManager;
     public void onCreate() {
         super.onCreate();
-        weatherManager = TPWeatherManager.sharedWeatherManager();
-        weatherManager.initWithKeyAndUserId("iehucbbfk1luf6ec", "UC67F0671D");
     }
     @Nullable
     @Override
@@ -83,88 +87,20 @@ public class WeatherService extends Service implements TPListeners.TPWeatherNowL
     }
 
     private void handleCommand(Intent intent) {
+        if(intent == null){
+            return;
+        }
         String action = intent.getAction();
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_LIVE_WEATHER)){
             LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
-            Location tpLoc = new Location("lizl");
-            tpLoc.setLatitude(loc.lat);
-            tpLoc.setLongitude(loc.lon);
-            //TPCity city = TPCity.cityWithLocation(tpLoc);
-            //TPCity city = TPCity.cityWithName("beijing");
-            TPCity city = new TPCity("beijing");
-            weatherManager.getWeatherNow(city
-                    , TPWeatherManager.TPWeatherReportLanguage.kSimplifiedChinese
-                    , TPWeatherManager.TPTemperatureUnit.kCelsius
-                    , this);
+            requestLiveWeather(loc);
         } else if(action.equals(ACTION_PREDICT_WEATHER)){
-            LocationService.LzLocation loc = (LocationService.LzLocation)intent.getSerializableExtra("loc");
-            Location tpLoc = new Location("lizl");
-            tpLoc.setLatitude(loc.lat);
-            tpLoc.setLongitude(loc.lon);
-            TPCity city = TPCity.cityWithLocation(tpLoc);
-            weatherManager.getWeatherDailyArray(city
-                    , TPWeatherManager.TPWeatherReportLanguage.kSimplifiedChinese
-                    , TPWeatherManager.TPTemperatureUnit.kCelsius
-                    , Calendar.getInstance().getTime()
-                    , 1
-                    , this);
+
         } else {
             stopSelf();
         }
 
-    }
-
-    @Override
-    public void onTPWeatherNowAvailable(TPWeatherNow tpWeatherNow, String s) {
-        if(tpWeatherNow != null) {
-            LzWeatherLive now = copyWeather(tpWeatherNow);
-            Intent intent = new Intent();
-            intent.setAction(ACTION_LIVE_WEATHER_GOT);
-            intent.putExtra("weather", now);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        } else {
-            LzLog.d(TAG, s);
-        }
-    }
-    private LzWeatherLive copyWeather(TPWeatherNow now) {
-        LzWeatherLive weather = new LzWeatherLive();
-        weather.summary = now.text;
-        weather.code = now.code;
-        weather.temperature = now.temperature;
-        weather.visibility = now.visibility;
-        weather.clouds = now.clouds;
-        weather.pressure = now.pressure;
-        weather.windDirection = now.windDirection;
-        weather.windDirectionDegree = now.windDirectionDegree;
-        weather.windSpeed = now.windSpeed;
-        weather.humidity = now.humidity;
-        return weather;
-    }
-    private LzWeatherDay copyWeather(TPWeatherDaily today) {
-        LzWeatherDay weather = new LzWeatherDay();
-        weather.date = today.date;
-        weather.textDay = today.textDay;
-        weather.textNight = today.textNight;
-        weather.windDirection = today.windDirection;
-        weather.windDirectionDegree = today.windDirectionDegree;
-        weather.windSpeed = today.windSpeed;
-        weather.highTemperature = today.highTemperature;
-        weather.lowTemperature = today.lowTemperature;
-
-        return  weather;
-    };
-    @Override
-    public void onTPWeatherDailyAvailable(TPWeatherDaily[] tpWeatherDailies, String s) {
-        if(tpWeatherDailies!=null && tpWeatherDailies.length > 0){
-            LzWeatherDay today = copyWeather(tpWeatherDailies[0]);
-            Intent intent = new Intent();
-            intent.setAction(ACTION_PREDICT_WEATHER_GOT);
-            intent.putExtra("weather", today);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        } else {
-            LzLog.d(TAG, s);
-        }
     }
 
     public class LzWeatherLive implements Serializable {
@@ -181,70 +117,96 @@ public class WeatherService extends Service implements TPListeners.TPWeatherNowL
         public double humidity;
         // 能见度，单位为km公里或mi英里
         public double visibility;
-        // 风向文字，例如“西北”
-        public String windDirection;
         // 风向角度，范围0~360，0为正北，90为正东，180为正南，270为正西
         public int windDirectionDegree;
         // 风速，单位为km/h公里每小时或mph英里每小时
         public double windSpeed;
 
-        // 云量，范围0~100，天空被云覆盖的百分比
-        public double clouds;
-        // 露点温度
-        public int dewPoint;
-
-        // 数据更新时间（该城市的本地时间）
-        public Date lastUpdateDate;
-
         public String toString() {
             String str = getResources().getString(R.string.weather_now_fmt,
                     summary,
                     temperature,
-                    windDirection,
-                    windSpeed,
-                    clouds
+                    windDirectionDegree,
+                    windSpeed
                     );
             return str;
         }
+
+        public LzWeatherLive(JSONObject json) {
+            JSONObject result =  json.optJSONObject("query").optJSONObject("results").optJSONObject("channel");
+            JSONObject condition = result.optJSONObject("item").optJSONObject("condition");
+            summary = condition.optString("text");
+            code = condition.optString("code");
+            temperature = Integer.parseInt(condition.optString("temp"));
+            visibility = result.optJSONObject("atmosphere").optDouble("visibility");
+            pressure = result.optJSONObject("atmosphere").optDouble("pressure");
+            windDirectionDegree = result.optJSONObject("wind").optInt("direction");
+            windSpeed = result.optJSONObject("wind").optDouble("speed");
+            humidity = result.optJSONObject("atmosphere").optDouble("humidity");;
+        }
     }
-    public class LzWeatherDay implements Serializable{
+    public class LzWeatherDay extends LzWeatherLive{
         // 日期
         public Date date;
-        // 白天天气现象文字
-        public String textDay;
+        // 天气现象文字
+        public String text;
         // 白天天气现象代码
-        public String codeDay;
-        // 晚间天气现象文字
-        public String textNight;
-        // 晚间天气现象代码
-        public String codeNight;
+        public String code;
+
         // 当天最高温度
         public int highTemperature;
         // 当天最低温度
         public int lowTemperature;
-        // 降水概率，范围0~100，单位百分比
-        public double chanceOfRain;
-        // 风向文字
-        public String windDirection;
-        // 风向角度，范围0~360
-        public int windDirectionDegree;
-        // 风速，单位km/h（当unit=c时）、mph（当unit=f时）
-        public double windSpeed;
-        // 风力等级
-        public double windScale;
+
         public String toString() {
             String str = getResources().getString(R.string.weather_day_fmt,
-                    textDay,
-                    textNight,
+                    text,
                     lowTemperature,
                     highTemperature,
-                    windDirection,
-                    windSpeed,
-                    chanceOfRain
+                    windDirectionDegree,
+                    windSpeed
             );
             return str;
         }
+        public LzWeatherDay(JSONObject json) {
+            super(json);
+            // parse forecast
 
+        }
+
+    }
+    private void sendWeatherBroadcast(String action, LzWeatherLive weather) {
+        Intent intent = new Intent();
+        intent.setAction(action);
+        intent.putExtra("weather", weather);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+    private final String baseUrl = "https://query.yahooapis.com/v1/public/yql?format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&q=";
+    private final String paramFmt = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s, %s\")";
+    private void requestLiveWeather(LocationService.LzLocation loc) {
+        String param = String.format(paramFmt, loc.city, loc.country);
+        String encodeParam = Uri.encode(param);
+        String fullUrl = baseUrl + encodeParam;
+        LzLog.d(TAG, fullUrl);
+        StringRequest req = new StringRequest(fullUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject json = new JSONObject(s);
+                    LzWeatherLive weather = new LzWeatherLive(json);
+                    sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, weather);
+                } catch (Exception e) {
+                    LzLog.e(TAG, e.getMessage(), e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                LzLog.e(TAG, volleyError.toString());
+            }
+        });
+        Volley.getDefaultRequestQueue(this).add(req);
     }
 
 }

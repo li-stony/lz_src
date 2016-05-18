@@ -38,6 +38,7 @@ public class LocationService extends Service implements AMapLocationListener {
         mLocationOption.setInterval(10000);
         mLocationOption.setNeedAddress(true);
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+
         mLocationClient = new AMapLocationClient(this);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.setLocationListener(this);
@@ -101,6 +102,9 @@ public class LocationService extends Service implements AMapLocationListener {
         loc.address = aMapLocation.getAddress();
         loc.lat = aMapLocation.getLatitude();
         loc.lon = aMapLocation.getLongitude();
+        loc.city = aMapLocation.getCity();
+        loc.province = aMapLocation.getProvince();
+        loc.country = aMapLocation.getCountry();
         Intent intent = new Intent();
         intent.setAction(ACTION_LOCATION_CHANED);
         intent.putExtra("loc", loc);
@@ -113,6 +117,9 @@ public class LocationService extends Service implements AMapLocationListener {
         public String address;
         public double lat;
         public double lon;
+        public String city;
+        public String province;
+        public String country;
 
         @Override
         public String toString() {
@@ -133,6 +140,9 @@ public class LocationService extends Service implements AMapLocationListener {
             dest.writeDouble(lat);
             dest.writeDouble(lon);
             dest.writeString(address);
+            dest.writeString(city);
+            dest.writeString(province);
+            dest.writeString(country);
         }
         public static final Creator<LzLocation> CREATOR = new Creator() {
             public LzLocation createFromParcel(Parcel in) {
@@ -142,6 +152,9 @@ public class LocationService extends Service implements AMapLocationListener {
                 loc.lat = in.readDouble();
                 loc.lon = in.readDouble();
                 loc.address = in.readString();
+                loc.city = in.readString();
+                loc.province = in.readString();
+                loc.country = in.readString();
                 return loc;
             }
 

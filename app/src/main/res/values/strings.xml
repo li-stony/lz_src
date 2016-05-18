@@ -6,6 +6,6 @@
     <string name="lat_lon_text">(%1$.4f,%2$.4f)</string>
 
     <string name="weather_title">Weather</string>
-    <string name="weather_now_fmt">%1$s Temp:%2$d Wind:%3$s %4$.2fkm/s Cloud:%5$.1f%%</string>
-    <string name="weather_day_fmt">%1$s/%2$s|Temp:%3$d-%4$d|Wind:%5$s %6$.2fkm/s|Rain:%7$.1f%%</string>
+    <string name="weather_now_fmt">%1$s|Temp:%2$d|Wind:%3$d %4$.2fkm/s </string>
+    <string name="weather_day_fmt">%1$s|Temp:%2$d-%3$d|Wind:%4$d %5$.2fkm/s</string>
 </resources>
