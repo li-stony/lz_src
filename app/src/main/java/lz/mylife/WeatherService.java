@@ -182,7 +182,7 @@ public class WeatherService extends Service  {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
     private final String baseUrl = "https://query.yahooapis.com/v1/public/yql?format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&q=";
-    private final String paramFmt = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s, %s\")";
+    private final String paramFmt = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s, %s\") and u='c'";
     private void requestLiveWeather(LocationService.LzLocation loc) {
         String param = String.format(paramFmt, loc.city, loc.country);
         String encodeParam = Uri.encode(param);
