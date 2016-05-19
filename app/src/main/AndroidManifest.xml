@@ -15,10 +15,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".LocationService"
+        <service android:name=".cal.LocationService"
             android:exported="false"/>
 
-        <service android:name=".WeatherService"
+        <service android:name=".cal.WeatherService"
                  android:exported="false" />
 
         <meta-data

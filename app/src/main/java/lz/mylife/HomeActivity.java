@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import lz.mylife.cal.LocationService;
+import lz.mylife.cal.WeatherService;
 import lz.util.LzLog;
 
 public class HomeActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package lz.mylife;
+package lz.mylife.cal;
 
 import android.app.Service;
 import android.content.Context;
@@ -13,8 +13,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-
-import java.io.Serializable;
 
 import lz.util.LzLog;
 
