@@ -21,6 +21,9 @@
         <service android:name=".cal.WeatherService"
                  android:exported="false" />
 
+        <service android:name=".cal.CalendarService"
+                 android:exported="false" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="82830c09dd77a2fd8400f0c9100b24aa" />

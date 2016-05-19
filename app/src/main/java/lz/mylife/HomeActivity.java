@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
+import lz.mylife.cal.CalendarService;
 import lz.mylife.cal.LocationService;
 import lz.mylife.cal.WeatherService;
 import lz.util.LzLog;
@@ -42,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         LocationService.start(this.getApplicationContext());
-
     }
     @Override
     public void onStop() {
@@ -68,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         weatherLive = weather;
         weatherTv.setText(weather.toString());
     }
-    int weatherCnt = 0;
+
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -77,12 +79,6 @@ public class HomeActivity extends AppCompatActivity {
                 LocationService.LzLocation loc = (LocationService.LzLocation) intent.getParcelableExtra("loc");
                 LzLog.d(TAG, loc.toString());
                 updateLocation(loc);
-                if(loc.err == 0) {
-                    if (weatherCnt % 720 == 0) {
-                        WeatherService.fetchLiveWeather(context, loc);
-                    }
-                    weatherCnt++;
-                }
             } else if (action.equals(WeatherService.ACTION_LIVE_WEATHER_GOT)) {
                 WeatherService.LzWeatherLive weather = (WeatherService.LzWeatherLive)intent.getSerializableExtra("weather");
                 LzLog.d(TAG, weather.toString());

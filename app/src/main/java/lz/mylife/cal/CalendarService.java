@@ -37,8 +37,12 @@ public class CalendarService extends Service {
     }
 
 
-    public static void addEvent(Context context){
-
+    public static void addEvent(Context context, LocationService.LzLocation loc){
+        Intent intent = new Intent();
+        intent.setClass(context, CalendarService.class);
+        intent.setAction(ACTION_ADD_EVENT);
+        intent.putExtra("loc", loc);
+        context.startService(intent);
     }
 
     @Override
@@ -61,7 +65,8 @@ public class CalendarService extends Service {
         String action = intent.getAction();
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_ADD_EVENT)){
-
+            LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
+            new EventAddingTask().execute(loc.lat, loc.lon);
         } else {
             stopSelf();
         }
@@ -70,15 +75,22 @@ public class CalendarService extends Service {
 
     private class EventAddingTask extends AsyncTask<Double, Void, LzCalEvent> {
 
+        private void printCal(Cursor cur) {
+            while(cur.moveToNext()){
+                long calId = cur.getLong(cur.getColumnIndex(CalendarContract.Calendars._ID));
+                String calAccount = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME));
+                String calName = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.NAME));
+                String calType = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_TYPE));
+                String str = String.format("%d %s %s %s", calId, calAccount, calName, calType);
+                LzLog.d(TAG, str);
+            }
+        }
         @Override
         protected LzCalEvent doInBackground(Double... params) {
             LzCalEvent ev = new LzCalEvent();
             ev.loc = new Location("lizl");
             ev.loc.setLatitude(params[0]);
             ev.loc.setLongitude(params[1]);
-            Cursor cur = null;
-            ContentResolver cr = getContentResolver();
-            Uri uri = CalendarContract.Calendars.CONTENT_URI;
             PackageManager pm = getApplicationContext().getPackageManager();
             boolean pRead = false;
             boolean pWrite = false;
@@ -88,9 +100,24 @@ public class CalendarService extends Service {
             if(pm.checkPermission(Manifest.permission.WRITE_CALENDAR,getPackageName()) == PackageManager.PERMISSION_GRANTED){
                 pWrite = true;
             }
-            if(pRead && pWrite) {
-                cr.query(uri, null, null, null, null);
+            Cursor cur = null;
+            try {
+
+                ContentResolver cr = getContentResolver();
+                Uri uri = CalendarContract.Calendars.CONTENT_URI;
+
+                if(pRead && pWrite) {
+                    cur = cr.query(uri, null, null, null, null);
+                    printCal(cur);
+                }
+            } catch (Exception e) {
+                LzLog.e(TAG, e.toString(), e);
+            } finally {
+                if(cur != null) {
+                    cur.close();
+                }
             }
+
             return ev;
         }
 

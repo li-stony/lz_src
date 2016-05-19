@@ -91,6 +91,8 @@ public class LocationService extends Service implements AMapLocationListener {
         return null;
     }
 
+    int calCnt = 0;
+    int weatherCnt = 0;
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         int err = aMapLocation.getErrorCode();
@@ -107,6 +109,16 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.setAction(ACTION_LOCATION_CHANED);
         intent.putExtra("loc", loc);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        if(err == 0) {
+            if (weatherCnt % 720 == 0) {
+                WeatherService.fetchLiveWeather(this.getApplicationContext(), loc);
+            }
+            weatherCnt++;
+            if(calCnt % 3600 == 0) {
+                CalendarService.addEvent(this.getApplicationContext(), loc);
+            }
+            calCnt ++;
+        }
     }
 
     public static class LzLocation implements Parcelable {
