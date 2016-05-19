@@ -192,6 +192,7 @@ public class WeatherService extends Service  {
             @Override
             public void onResponse(String s) {
                 try {
+                    LzLog.d(TAG,s);
                     JSONObject json = new JSONObject(s);
                     LzWeatherLive weather = new LzWeatherLive(json);
                     sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, weather);
