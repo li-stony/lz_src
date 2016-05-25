@@ -47,7 +47,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private WeatherService.LzWeatherDay weatherDay;
 
     private String calAccount = null;
-
     SharedPreferences pref ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

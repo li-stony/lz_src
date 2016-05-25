@@ -27,7 +27,8 @@ import lz.util.LzLog;
 public class CalendarService extends Service {
 
     String TAG = getClass().getSimpleName();
-    public static final String ACTION_ADD_EVENT = "add_event";
+    public static final String ACTION_ADD_LIVE_EVENT = "add_live_event";
+    public static final String ACTION_ADD_DAY_EVENT = "add_day_event";
 
 
     @Nullable
@@ -37,11 +38,21 @@ public class CalendarService extends Service {
     }
 
 
-    public static void addEvent(Context context, LocationService.LzLocation loc){
+    public static void addDayEvent(Context context, LocationService.LzLocation loc, WeatherService.LzWeatherDay weather){
         Intent intent = new Intent();
         intent.setClass(context, CalendarService.class);
-        intent.setAction(ACTION_ADD_EVENT);
+        intent.setAction(ACTION_ADD_DAY_EVENT);
         intent.putExtra("loc", loc);
+        intent.putExtra("weather", weather);
+        context.startService(intent);
+    }
+
+    public static void addLiveEvent(Context context, LocationService.LzLocation loc, WeatherService.LzWeatherLive weather){
+        Intent intent = new Intent();
+        intent.setClass(context, CalendarService.class);
+        intent.setAction(ACTION_ADD_LIVE_EVENT);
+        intent.putExtra("loc", loc);
+        intent.putExtra("weather", weather);
         context.startService(intent);
     }
 
@@ -64,7 +75,7 @@ public class CalendarService extends Service {
         }
         String action = intent.getAction();
         LzLog.d(TAG, "received command: "+action);
-        if(action.equals(ACTION_ADD_EVENT)){
+        if(action.equals(ACTION_ADD_LIVE_EVENT)){
             LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
             new EventAddingTask().execute(loc.lat, loc.lon);
         } else {

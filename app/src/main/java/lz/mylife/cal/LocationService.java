@@ -28,6 +28,11 @@ public class LocationService extends Service implements AMapLocationListener {
     private AMapLocationClientOption mLocationOption ;
     private AMapLocationClient mLocationClient;
 
+    private static final String ACTION_START = "start";
+    private static final String ACTION_STOP = "stop";
+    private static final String ACTION_START_PIN = "start_pin";
+
+    private String lastCmd = "";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,13 +48,19 @@ public class LocationService extends Service implements AMapLocationListener {
     }
     public static void start(Context context) {
         Intent intent = new Intent();
-        intent.setAction("start");
+        intent.setAction(ACTION_START);
+        intent.setClass(context, LocationService.class);
+        context.startService(intent);
+    }
+    public static void startPin(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_START_PIN);
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
     public static void stop(Context context) {
         Intent intent = new Intent();
-        intent.setAction("stop");
+        intent.setAction(ACTION_STOP);
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
@@ -71,8 +82,10 @@ public class LocationService extends Service implements AMapLocationListener {
             return;
         }
         String action = intent.getAction();
+        lastCmd = action;
         LzLog.d(TAG, "received command: "+action);
-        if(action.equals("start")){
+        if(action.equals(ACTION_START)
+                ||action.equals(ACTION_START_PIN)){
             if(!mLocationClient.isStarted()) {
                 mLocationClient.startLocation();
             }
@@ -91,7 +104,6 @@ public class LocationService extends Service implements AMapLocationListener {
         return null;
     }
 
-    int calCnt = 0;
     int weatherCnt = 0;
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
@@ -110,14 +122,17 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.putExtra("loc", loc);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         if(err == 0) {
-            if (weatherCnt % 720 == 0) {
-                WeatherService.fetchLiveWeather(this.getApplicationContext(), loc);
+            if (lastCmd.equals(ACTION_START_PIN)) {
+                WeatherService.fetchPredictWeather(this.getApplicationContext(), loc);
+                LocationService.stop(getApplicationContext());
+            } else {
+                if (weatherCnt % 720 == 0) {
+                    WeatherService.fetchLiveWeather(this.getApplicationContext(), loc);
+                }
+                weatherCnt++;
+
             }
-            weatherCnt++;
-            if(calCnt % 3600 == 0) {
-                CalendarService.addEvent(this.getApplicationContext(), loc);
-            }
-            calCnt ++;
+
         }
     }
 

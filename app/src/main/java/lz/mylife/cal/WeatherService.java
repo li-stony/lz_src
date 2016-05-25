@@ -77,7 +77,6 @@ public class WeatherService extends Service  {
         // stopped, so return sticky.
         return START_STICKY;
     }
-
     private void handleCommand(Intent intent) {
         if(intent == null){
             return;
@@ -86,9 +85,10 @@ public class WeatherService extends Service  {
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_LIVE_WEATHER)){
             LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
-            requestLiveWeather(loc);
+            requestWeather(loc, action);
         } else if(action.equals(ACTION_PREDICT_WEATHER)){
-
+            LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
+            requestWeather(loc, action);
         } else {
             stopSelf();
         }
@@ -175,7 +175,7 @@ public class WeatherService extends Service  {
     }
     private final String baseUrl = "https://query.yahooapis.com/v1/public/yql?format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&q=";
     private final String paramFmt = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s, %s\") and u='c'";
-    private void requestLiveWeather(LocationService.LzLocation loc) {
+    private void requestWeather(final LocationService.LzLocation loc, final String action) {
         String param = String.format(paramFmt, loc.city, loc.country);
         String encodeParam = Uri.encode(param);
         String fullUrl = baseUrl + encodeParam;
@@ -186,8 +186,14 @@ public class WeatherService extends Service  {
                 try {
                     LzLog.d(TAG,s);
                     JSONObject json = new JSONObject(s);
-                    LzWeatherLive weather = new LzWeatherLive(json);
-                    sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, weather);
+                    if(action.equals(ACTION_LIVE_WEATHER)) {
+                        LzWeatherLive weather = new LzWeatherLive(json);
+                        sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, weather);
+                    } else if(action.equals(ACTION_PREDICT_WEATHER)) {
+                        LzWeatherDay weather = new LzWeatherDay(json);
+                        CalendarService.addDayEvent(getApplicationContext(), loc, weather);
+                    }
+
                 } catch (Exception e) {
                     LzLog.e(TAG, e.getMessage(), e);
                 }
