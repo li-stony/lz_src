@@ -12,6 +12,7 @@
         tools:context="lz.mylife.HomeActivity"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,67 +51,75 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorDivider"
                 />
-            <RelativeLayout
-                android:id="@+id/location_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/location_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="24dp"
-                    android:textColor="@color/colorPrimaryText"
-                    android:text="@string/location_title"
-                    />
-                <TextView
-                    android:id="@+id/loc_text_id"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/location_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/location_title"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/colorSecondaryText"
-                    android:text="@string/location_text"
-                    android:textSize="16dp"/>
-                <TextView
-                    android:id="@+id/loc_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/loc_text_id"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/colorSecondaryText"
-                    android:text="@string/lat_lon_text"
-                    android:textSize="16dp"/>
-            </RelativeLayout>
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/location_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24dp"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="@string/location_title"
+                        />
+                    <TextView
+                        android:id="@+id/loc_text_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/location_title"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorSecondaryText"
+                        android:text="@string/location_text"
+                        android:textSize="16dp"/>
+                    <TextView
+                        android:id="@+id/loc_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/loc_text_id"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorSecondaryText"
+                        android:text="@string/lat_lon_text"
+                        android:textSize="16dp"/>
+                </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorDivider"/>
-            <RelativeLayout
-                android:id="@+id/weather_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/weather_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="24dp"
-                    android:textColor="@color/colorPrimaryText"
-                    android:text="@string/weather_title"
-                    />
-                <TextView
-                    android:id="@+id/weather_text"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/weather_title"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/colorSecondaryText"
-                    android:text="@string/weather_now_fmt"
-                    android:textSize="16dp"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorDivider"/>
+                <RelativeLayout
+                    android:id="@+id/weather_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/weather_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24dp"
+                        android:textColor="@color/colorPrimaryText"
+                        android:text="@string/weather_title"
+                        />
+                    <TextView
+                        android:id="@+id/weather_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/weather_title"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorSecondaryText"
+                        android:text="@string/weather_now_fmt"
+                        android:textSize="16dp"/>
 
-            </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
