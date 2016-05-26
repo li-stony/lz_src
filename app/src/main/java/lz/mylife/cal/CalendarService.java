@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
@@ -13,6 +14,8 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 
 import java.security.Permission;
 import java.util.Calendar;
@@ -81,46 +84,39 @@ public class CalendarService extends Service {
         if(action.equals(ACTION_ADD_LIVE_EVENT)){
             LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
             WeatherService.LzWeatherLive weather = (WeatherService.LzWeatherLive)intent.getSerializableExtra("weather");
-            new EventAddingTask(loc, weather).execute();
+            new EventAddingTask(action, loc, weather).execute();
         } else {
             stopSelf();
         }
 
     }
 
-    private class EventAddingTask extends AsyncTask<Double, Void, LzCalEvent> {
-
+    private class EventAddingTask extends AsyncTask<Double, Void, Integer> {
+        String cmd;
         LocationService.LzLocation loc;
         WeatherService.LzWeatherLive weather ;
-        public EventAddingTask(LocationService.LzLocation loc, WeatherService.LzWeatherLive weather) {
+        public EventAddingTask(String cmd, LocationService.LzLocation loc, WeatherService.LzWeatherLive weather) {
+            this.cmd = cmd;
             this.loc = loc;
             this.weather = weather;
         }
-        private void printCal(Cursor cur) {
-            while(cur.moveToNext()){
-                long calId = cur.getLong(cur.getColumnIndex(CalendarContract.Calendars._ID));
-                String calAccount = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME));
-                String calName = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.NAME));
-                String calType = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_TYPE));
-                String str = String.format("%d %s %s %s", calId, calAccount, calName, calType);
-                LzLog.d(TAG, str);
-            }
-        }
-        @Override
-        protected LzCalEvent doInBackground(Double... params) {
-            LzCalEvent ev = new LzCalEvent();
-            ev.loc = new Location("lizl");
-            ev.loc.setLatitude(loc.lat);
-            ev.loc.setLongitude(loc.lon);
-
+        private long getDestCal(String account) {
             Cursor cur = null;
             try {
-
                 ContentResolver cr = getContentResolver();
                 Uri uri = CalendarContract.Calendars.CONTENT_URI;
                 cur = cr.query(uri, null, null, null, null);
-                printCal(cur);
-
+                while(cur.moveToNext()){
+                    long calId = cur.getLong(cur.getColumnIndex(CalendarContract.Calendars._ID));
+                    String calAccount = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME));
+                    String calName = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.NAME));
+                    String calType = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_TYPE));
+                    String str = String.format("%d %s %s %s", calId, calAccount, calName, calType);
+                    LzLog.d(TAG, str);
+                    if(calAccount.equals(account)) {
+                        return calId;
+                    }
+                }
             } catch (SecurityException e) {
                 LzLog.e(TAG, e.toString(), e);
             } catch (Exception e) {
@@ -131,12 +127,33 @@ public class CalendarService extends Service {
                 }
             }
 
-            return ev;
+            return -1;
+        }
+        @Override
+        protected Integer doInBackground(Double... params) {
+            SharedPreferences pref = getSharedPreferences("mylife", 0);
+            String account = pref.getString("calAccount", "");
+            if(TextUtils.isEmpty(account)) {
+                return -1;
+            }
+            LzCalEvent ev = new LzCalEvent();
+            ev.loc = new Location("lizl");
+            ev.loc.setLatitude(loc.lat);
+            ev.loc.setLongitude(loc.lon);
+
+
+
+            return -1;
         }
 
         @Override
-        protected void onPostExecute(LzCalEvent event) {
-
+        protected void onPostExecute(Integer event) {
+            if(event == -1) {
+                LzLog.e(TAG, "insert event failed");
+            }
+            Intent intent = new Intent(ACTION_LIVE_EVENT_PINNED);
+            intent.putExtra("event", event);
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
         }
 
     }
