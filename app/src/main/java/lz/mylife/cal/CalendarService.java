@@ -31,6 +31,9 @@ public class CalendarService extends Service {
     public static final String ACTION_ADD_DAY_EVENT = "add_day_event";
 
 
+    public static final String ACTION_LIVE_EVENT_PINNED = "live_event_pinned";
+    public static final String ACTION_DAY_EVENT_PINNED = "day_event_pinned";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -77,7 +80,8 @@ public class CalendarService extends Service {
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_ADD_LIVE_EVENT)){
             LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
-            new EventAddingTask().execute(loc.lat, loc.lon);
+            WeatherService.LzWeatherLive weather = (WeatherService.LzWeatherLive)intent.getSerializableExtra("weather");
+            new EventAddingTask(loc, weather).execute();
         } else {
             stopSelf();
         }
@@ -86,6 +90,12 @@ public class CalendarService extends Service {
 
     private class EventAddingTask extends AsyncTask<Double, Void, LzCalEvent> {
 
+        LocationService.LzLocation loc;
+        WeatherService.LzWeatherLive weather ;
+        public EventAddingTask(LocationService.LzLocation loc, WeatherService.LzWeatherLive weather) {
+            this.loc = loc;
+            this.weather = weather;
+        }
         private void printCal(Cursor cur) {
             while(cur.moveToNext()){
                 long calId = cur.getLong(cur.getColumnIndex(CalendarContract.Calendars._ID));
@@ -100,27 +110,19 @@ public class CalendarService extends Service {
         protected LzCalEvent doInBackground(Double... params) {
             LzCalEvent ev = new LzCalEvent();
             ev.loc = new Location("lizl");
-            ev.loc.setLatitude(params[0]);
-            ev.loc.setLongitude(params[1]);
-            PackageManager pm = getApplicationContext().getPackageManager();
-            boolean pRead = false;
-            boolean pWrite = false;
-            if(pm.checkPermission(Manifest.permission.READ_CALENDAR,getPackageName()) == PackageManager.PERMISSION_GRANTED){
-                pRead = true;
-            }
-            if(pm.checkPermission(Manifest.permission.WRITE_CALENDAR,getPackageName()) == PackageManager.PERMISSION_GRANTED){
-                pWrite = true;
-            }
+            ev.loc.setLatitude(loc.lat);
+            ev.loc.setLongitude(loc.lon);
+
             Cursor cur = null;
             try {
 
                 ContentResolver cr = getContentResolver();
                 Uri uri = CalendarContract.Calendars.CONTENT_URI;
+                cur = cr.query(uri, null, null, null, null);
+                printCal(cur);
 
-                if(pRead && pWrite) {
-                    cur = cr.query(uri, null, null, null, null);
-                    printCal(cur);
-                }
+            } catch (SecurityException e) {
+                LzLog.e(TAG, e.toString(), e);
             } catch (Exception e) {
                 LzLog.e(TAG, e.toString(), e);
             } finally {
