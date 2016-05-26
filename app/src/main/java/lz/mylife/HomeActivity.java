@@ -31,8 +31,9 @@ import lz.mylife.cal.CalendarService;
 import lz.mylife.cal.LocationService;
 import lz.mylife.cal.WeatherService;
 import lz.util.LzLog;
+import lz.util.SystemBarUtil;
 
-public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private String TAG = getClass().getSimpleName();
     private TextView addressTv;
@@ -48,10 +49,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private String calAccount = null;
     SharedPreferences pref ;
+
+    private View pinBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        SystemBarUtil.setSystemBar(this);
         addressTv = (TextView) findViewById(R.id.loc_text_id);
         locTv = (TextView) findViewById(R.id.loc_id);
         weatherTv = (TextView) findViewById(R.id.weather_text);
@@ -60,6 +64,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         calSpinner = (Spinner) findViewById(R.id.calendar_spinner);
         calSpinner.setAdapter(calAdapter);
         calSpinner.setOnItemSelectedListener(this);
+        pinBtn = findViewById(R.id.pin_btn);
+        pinBtn.setOnClickListener(this);
         //
         IntentFilter filter = new IntentFilter();
         filter.addAction(LocationService.ACTION_LOCATION_CHANED);
@@ -157,6 +163,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
     };
+
+    @Override
+    public void onClick(View v) {
+
+    }
 
 
     private class CalAdapter extends ArrayAdapter<String> {
