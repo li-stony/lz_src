@@ -96,6 +96,7 @@ public class WeatherService extends Service  {
     }
 
     public class LzWeatherLive implements Serializable {
+        protected JSONObject json;
         // 天气现象文字，例如“多云”
         public String summary;
         // 天气现象代码，例如“4”
@@ -125,6 +126,7 @@ public class WeatherService extends Service  {
         }
 
         public LzWeatherLive(JSONObject json) {
+            this.json = json;
             JSONObject result =  json.optJSONObject("query").optJSONObject("results").optJSONObject("channel");
             JSONObject condition = result.optJSONObject("item").optJSONObject("condition");
             summary = condition.optString("text");
@@ -135,6 +137,9 @@ public class WeatherService extends Service  {
             windDirectionDegree = result.optJSONObject("wind").optInt("direction");
             windSpeed = result.optJSONObject("wind").optDouble("speed");
             humidity = result.optJSONObject("atmosphere").optDouble("humidity");;
+        }
+        public JSONObject toJson() {
+            return json;
         }
     }
     public class LzWeatherDay extends LzWeatherLive{
@@ -150,6 +155,7 @@ public class WeatherService extends Service  {
         // 当天最低温度
         public int lowTemperature;
 
+        @Override
         public String toString() {
             String str = getResources().getString(R.string.weather_day_fmt,
                     text,
@@ -191,7 +197,7 @@ public class WeatherService extends Service  {
                         sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, weather);
                     } else if(action.equals(ACTION_PREDICT_WEATHER)) {
                         LzWeatherDay weather = new LzWeatherDay(json);
-                        CalendarService.addDayEvent(getApplicationContext(), loc, weather);
+                        CalendarService.addEvent(getApplicationContext(), loc, weather);
                     }
 
                 } catch (Exception e) {

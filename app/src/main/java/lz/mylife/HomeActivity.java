@@ -3,6 +3,7 @@ package lz.mylife;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +73,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         filter.addAction(LocationService.ACTION_LOCATION_CHANED);
         filter.addAction(WeatherService.ACTION_LIVE_WEATHER_GOT);
         filter.addAction(WeatherService.ACTION_PREDICT_WEATHER_GOT);
+        filter.addAction(CalendarService.ACTION_EVENT_PINNED);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
 
         initPermissions();
@@ -160,13 +163,26 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 WeatherService.LzWeatherLive weather = (WeatherService.LzWeatherLive)intent.getSerializableExtra("weather");
                 LzLog.d(TAG, weather.toString());
                 updateWeather(weather);
+            } else if(action.equals(CalendarService.ACTION_EVENT_PINNED)) {
+                Long ev = intent.getLongExtra("event", -1);
+                if(ev == -1) {
+                    Toast.makeText(context, R.string.event_pinned_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    Uri uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, ev);
+                    Intent calIntent = new Intent(Intent.ACTION_VIEW).setData(uri);
+                    startActivity(calIntent);
+                }
             }
         }
     };
 
     @Override
     public void onClick(View v) {
-
+        if(v == pinBtn) {
+            if(weatherLive != null && location != null) {
+                CalendarService.addEvent(this, location, weatherLive);
+            }
+        }
     }
 
 

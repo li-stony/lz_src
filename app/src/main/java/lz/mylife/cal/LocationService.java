@@ -52,7 +52,7 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
-    public static void startPin(Context context) {
+    public static void startPinWeatherEvent(Context context) {
         Intent intent = new Intent();
         intent.setAction(ACTION_START_PIN);
         intent.setClass(context, LocationService.class);
@@ -150,6 +150,11 @@ public class LocationService extends Service implements AMapLocationListener {
         public String toString() {
             String fmt = "%d %s (%.4f, %.4f), %s";
             String str = String.format(fmt, err, errMsg, lat, lon, address);
+            return str;
+        }
+        public String toAddressString() {
+            String fmt = "%s (%.4f, %.4f)";
+            String str = String.format(fmt, address, lat, lon);
             return str;
         }
 
