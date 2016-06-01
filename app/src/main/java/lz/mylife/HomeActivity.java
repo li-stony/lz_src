@@ -25,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.zip.Inflater;
@@ -32,6 +34,7 @@ import java.util.zip.Inflater;
 import lz.mylife.cal.CalendarService;
 import lz.mylife.cal.LocationService;
 import lz.mylife.cal.WeatherService;
+import lz.util.LzGlobalStates;
 import lz.util.LzLog;
 import lz.util.SystemBarUtil;
 
@@ -58,6 +61,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         SystemBarUtil.setSystemBar(this);
+        LzGlobalStates.globalContext = this.getApplicationContext();
+
         addressTv = (TextView) findViewById(R.id.loc_text_id);
         locTv = (TextView) findViewById(R.id.loc_id);
         weatherTv = (TextView) findViewById(R.id.weather_text);
@@ -160,9 +165,16 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 LzLog.d(TAG, loc.toString());
                 updateLocation(loc);
             } else if (action.equals(WeatherService.ACTION_LIVE_WEATHER_GOT)) {
-                WeatherService.LzWeatherLive weather = (WeatherService.LzWeatherLive)intent.getSerializableExtra("weather");
-                LzLog.d(TAG, weather.toString());
-                updateWeather(weather);
+                String json = intent.getStringExtra("weather");
+                try {
+                    JSONObject obj = new JSONObject(json);
+                    WeatherService.LzWeatherLive weather = new WeatherService.LzWeatherLive(obj);
+                    LzLog.d(TAG, weather.toString());
+                    updateWeather(weather);
+                } catch (Exception e) {
+                    LzLog.e(TAG, e.toString(), e);
+                }
+
             } else if(action.equals(CalendarService.ACTION_EVENT_PINNED)) {
                 Long ev = intent.getLongExtra("event", -1);
                 if(ev == -1) {
@@ -180,7 +192,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onClick(View v) {
         if(v == pinBtn) {
             if(weatherLive != null && location != null) {
-                CalendarService.addEvent(this, location, weatherLive);
+                CalendarService.addLiveWeatherEvent(this, location, weatherLive);
             }
         }
     }

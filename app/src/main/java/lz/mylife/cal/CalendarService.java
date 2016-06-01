@@ -18,6 +18,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
+import org.json.JSONObject;
+
 import java.security.Permission;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,24 +34,31 @@ import lz.util.SystemBarUtil;
 public class CalendarService extends Service {
 
     String TAG = getClass().getSimpleName();
-    public static final String ACTION_ADD_EVENT = "add_live_event";
-
+    public static final String ACTION_ADD_LIVE_WEATHER = "add_live_event";
+    public static final String ACTION_ADD_DAY_WEATHER = "add_day_event";
 
     public static final String ACTION_EVENT_PINNED = "live_event_pinned";
 
+    public static void addLiveWeatherEvent(Context context, LocationService.LzLocation loc, WeatherService.LzWeatherLive weather){
+        Intent intent = new Intent();
+        intent.setClass(context, CalendarService.class);
+        intent.setAction(ACTION_ADD_LIVE_WEATHER);
+        intent.putExtra("loc", loc);
+        intent.putExtra("weather", weather.toJson().toString());
+        context.startService(intent);
+    }
+    public static void addDayWeatherEvent(Context context, LocationService.LzLocation loc, WeatherService.LzWeatherDay weather){
+        Intent intent = new Intent();
+        intent.setClass(context, CalendarService.class);
+        intent.setAction(ACTION_ADD_DAY_WEATHER);
+        intent.putExtra("loc", loc);
+        intent.putExtra("weather", weather.toJson().toString());
+        context.startService(intent);
+    }
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    public static void addEvent(Context context, LocationService.LzLocation loc, WeatherService.LzWeatherLive weather){
-        Intent intent = new Intent();
-        intent.setClass(context, CalendarService.class);
-        intent.setAction(ACTION_ADD_EVENT);
-        intent.putExtra("loc", loc);
-        intent.putExtra("weather", weather.toJson().toString());
-        context.startService(intent);
     }
 
     @Override
@@ -71,9 +80,21 @@ public class CalendarService extends Service {
         }
         String action = intent.getAction();
         LzLog.d(TAG, "received command: "+action);
-        if(action.equals(ACTION_ADD_EVENT)){
+        String str = intent.getStringExtra("weather");
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject(str);
+        } catch (Exception e) {
+            LzLog.e(TAG, e.toString(), e);
+        }
+
+        if(action.equals(ACTION_ADD_LIVE_WEATHER)){
             LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
-            WeatherService.LzWeatherLive weather = (WeatherService.LzWeatherLive)intent.getSerializableExtra("weather");
+            WeatherService.LzWeatherLive weather = new WeatherService.LzWeatherLive(obj);
+            new EventAddingTask(action, loc, weather).execute();
+        } if(action.equals(ACTION_ADD_DAY_WEATHER)){
+            LocationService.LzLocation loc = (LocationService.LzLocation)intent.getParcelableExtra("loc");
+            WeatherService.LzWeatherDay weather = new WeatherService.LzWeatherDay(obj);
             new EventAddingTask(action, loc, weather).execute();
         } else {
             stopSelf();

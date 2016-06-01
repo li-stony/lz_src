@@ -1,5 +1,6 @@
 package lz.mylife.cal;
 
+import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import lz.mylife.R;
+import lz.util.LzGlobalStates;
 import lz.util.LzLog;
 
 /**
@@ -95,7 +97,7 @@ public class WeatherService extends Service  {
 
     }
 
-    public class LzWeatherLive implements Serializable {
+    public static class LzWeatherLive implements Serializable {
         protected JSONObject json;
         // 天气现象文字，例如“多云”
         public String summary;
@@ -116,7 +118,7 @@ public class WeatherService extends Service  {
         public double windSpeed;
 
         public String toString() {
-            String str = getResources().getString(R.string.weather_now_fmt,
+            String str = LzGlobalStates.globalContext.getResources().getString(R.string.weather_now_fmt,
                     summary,
                     temperature,
                     windDirectionDegree,
@@ -142,7 +144,7 @@ public class WeatherService extends Service  {
             return json;
         }
     }
-    public class LzWeatherDay extends LzWeatherLive{
+    public static class LzWeatherDay extends LzWeatherLive{
         // 日期
         public Date date;
         // 天气现象文字
@@ -157,7 +159,7 @@ public class WeatherService extends Service  {
 
         @Override
         public String toString() {
-            String str = getResources().getString(R.string.weather_day_fmt,
+            String str = LzGlobalStates.globalContext.getResources().getString(R.string.weather_day_fmt,
                     text,
                     lowTemperature,
                     highTemperature,
@@ -176,7 +178,7 @@ public class WeatherService extends Service  {
     private void sendWeatherBroadcast(String action, LzWeatherLive weather) {
         Intent intent = new Intent();
         intent.setAction(action);
-        intent.putExtra("weather", weather);
+        intent.putExtra("weather", weather.toJson().toString());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
     private final String baseUrl = "https://query.yahooapis.com/v1/public/yql?format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&q=";
@@ -197,7 +199,7 @@ public class WeatherService extends Service  {
                         sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, weather);
                     } else if(action.equals(ACTION_PREDICT_WEATHER)) {
                         LzWeatherDay weather = new LzWeatherDay(json);
-                        CalendarService.addEvent(getApplicationContext(), loc, weather);
+                        CalendarService.addDayWeatherEvent(getApplicationContext(), loc, weather);
                     }
 
                 } catch (Exception e) {
