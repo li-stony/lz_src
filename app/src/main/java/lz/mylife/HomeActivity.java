@@ -1,6 +1,8 @@
 package lz.mylife;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.zip.Inflater;
 
+import lz.mylife.cal.CalEventReceiver;
 import lz.mylife.cal.CalendarService;
 import lz.mylife.cal.LocationService;
 import lz.mylife.cal.WeatherService;
@@ -92,8 +95,15 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         testDayBtn = findViewById(R.id.test_day_ev);
         testDayBtn.setOnClickListener(this);
 
+        // tomorrow at 6.00 add a weather event
+        CalEventReceiver.startAlarmEvent(getApplicationContext(), 1);
+
     }
 
+    public void onDestory() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
     private void initPermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{
@@ -142,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onStop() {
         super.onStop();
         LocationService.stop(this.getApplicationContext());
-        WeatherService.stop(this.getApplicationContext());
+        //WeatherService.stop(this.getApplicationContext());
     }
 
     private void updateLocation(LocationService.LzLocation loc) {
@@ -202,7 +212,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 CalendarService.addLiveWeatherEvent(this, location, weatherLive);
             }
         } else if ( v == testDayBtn ) {
-            LocationService.startPinWeatherEvent(this);
+            //LocationService.startPinWeatherEvent(this);
+            CalEventReceiver.startAlarmEvent(this.getApplicationContext(), -1);
         }
     }
 
@@ -289,5 +300,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
 
 }

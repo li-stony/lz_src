@@ -1,5 +1,7 @@
 package lz.mylife.cal;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lz.util.LzLog;
@@ -65,12 +68,15 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
+
     public static void stop(Context context) {
         Intent intent = new Intent();
         intent.setAction(ACTION_STOP);
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
+
+
     @Override
     public void onStart(Intent intent, int startId) {
         handleCommand(intent);

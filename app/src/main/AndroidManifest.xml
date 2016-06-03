@@ -28,6 +28,13 @@
             android:name="com.amap.api.v2.apikey"
             android:value="82830c09dd77a2fd8400f0c9100b24aa" />
         <service android:name="com.amap.api.location.APSService"></service>
+
+        <receiver android:name=".cal.CalEventReceiver"
+            >
+            <intent-filter >
+                <action android:name="lz.mylife.CAL_EVENT_ACTION" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.READ_CALENDAR" />
