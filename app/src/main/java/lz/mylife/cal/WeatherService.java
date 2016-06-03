@@ -14,6 +14,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -149,7 +151,7 @@ public class WeatherService extends Service  {
         public Date date;
         // 天气现象文字
         public String text;
-        // 白天天气现象代码
+        // 天气现象代码
         public String code;
 
         // 当天最高温度
@@ -168,10 +170,18 @@ public class WeatherService extends Service  {
             );
             return str;
         }
-        public LzWeatherDay(JSONObject json) {
+        public LzWeatherDay(JSONObject json){
             super(json);
             // parse forecast
-
+            JSONObject result =  json.optJSONObject("query").optJSONObject("results").optJSONObject("channel");
+            JSONArray forecast = result.optJSONObject("item").optJSONArray("forecast");
+            if(forecast!= null &&forecast.length()>0){
+                JSONObject obj1 = forecast.optJSONObject(0);
+                this.code = obj1.optString("code");
+                this.text = obj1.optString("text");
+                this.highTemperature = Integer.parseInt(obj1.optString("high"));
+                this.lowTemperature = Integer.parseInt(obj1.optString("low"));
+            }
         }
 
     }

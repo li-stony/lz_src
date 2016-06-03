@@ -56,6 +56,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     SharedPreferences pref ;
 
     private View pinBtn;
+
+    //
+    private View testDayBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         initPermissions();
 
         pref = getSharedPreferences("mylife", 0);
+
+        //
+        testDayBtn = findViewById(R.id.test_day_ev);
+        testDayBtn.setOnClickListener(this);
 
     }
 
@@ -194,6 +201,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             if(weatherLive != null && location != null) {
                 CalendarService.addLiveWeatherEvent(this, location, weatherLive);
             }
+        } else if ( v == testDayBtn ) {
+            LocationService.startPinWeatherEvent(this);
         }
     }
 

@@ -14,6 +14,8 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import lz.util.LzLog;
 
 /**
@@ -30,9 +32,14 @@ public class LocationService extends Service implements AMapLocationListener {
 
     private static final String ACTION_START = "start";
     private static final String ACTION_STOP = "stop";
-    private static final String ACTION_START_PIN = "start_pin";
+    private static final String ACTION_ADD_CALENDAR_EVENT = "start_pin";
 
     private String lastCmd = "";
+
+    private AtomicInteger calEventFlag = new AtomicInteger(0);
+    private AtomicInteger serviceCnt = new AtomicInteger(0);
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -54,7 +61,7 @@ public class LocationService extends Service implements AMapLocationListener {
     }
     public static void startPinWeatherEvent(Context context) {
         Intent intent = new Intent();
-        intent.setAction(ACTION_START_PIN);
+        intent.setAction(ACTION_ADD_CALENDAR_EVENT);
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
@@ -85,15 +92,25 @@ public class LocationService extends Service implements AMapLocationListener {
         lastCmd = action;
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_START)
-                ||action.equals(ACTION_START_PIN)){
+                ||action.equals(ACTION_ADD_CALENDAR_EVENT)){
+            int cnt = serviceCnt.addAndGet(1);
+            LzLog.d(TAG, "LocationService start "+cnt);
             if(!mLocationClient.isStarted()) {
                 mLocationClient.startLocation();
             }
+            if(action.equals(ACTION_ADD_CALENDAR_EVENT)){
+                calEventFlag.set(1);
+            }
         } else {
-            if(mLocationClient.isStarted()) {
-                mLocationClient.stopLocation();
+            int cnt = serviceCnt.addAndGet(-1);
+            if(cnt == 0) {
+                LzLog.d(TAG, "LocationService stop...");
+                if(mLocationClient.isStarted()) {
+                    mLocationClient.stopLocation();
+                }
                 stopSelf();
             }
+
         }
 
     }
@@ -122,7 +139,7 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.putExtra("loc", loc);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         if(err == 0) {
-            if (lastCmd.equals(ACTION_START_PIN)) {
+            if(calEventFlag.getAndSet(0) == 1){
                 WeatherService.fetchPredictWeather(this.getApplicationContext(), loc);
                 LocationService.stop(getApplicationContext());
             } else {
@@ -132,7 +149,6 @@ public class LocationService extends Service implements AMapLocationListener {
                 weatherCnt++;
 
             }
-
         }
     }
 
