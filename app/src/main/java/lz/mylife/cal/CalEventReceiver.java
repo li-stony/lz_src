@@ -27,6 +27,7 @@ public class CalEventReceiver extends BroadcastReceiver {
         }
     }
 
+    static  boolean  test = true;
     public static void startAlarmEvent(Context context, int dayDelta) {
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent();
@@ -34,10 +35,14 @@ public class CalEventReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 99, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.HOUR, 6);
-        cal.set(Calendar.MINUTE, 15);
-        cal.set(Calendar.SECOND, 0);
-        cal.add(Calendar.DAY_OF_MONTH, dayDelta);
+        if(!test) {
+            cal.set(Calendar.HOUR, 6);
+            cal.set(Calendar.MINUTE, 15);
+            cal.set(Calendar.SECOND, 0);
+            cal.add(Calendar.DAY_OF_MONTH, dayDelta);
+        } else {
+            cal.add(Calendar.MINUTE, 5);
+        }
         alarm.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 }

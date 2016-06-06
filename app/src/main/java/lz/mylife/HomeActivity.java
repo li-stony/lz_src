@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public void onDestory() {
+    public void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }

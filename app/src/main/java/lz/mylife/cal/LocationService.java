@@ -95,7 +95,6 @@ public class LocationService extends Service implements AMapLocationListener {
             return;
         }
         String action = intent.getAction();
-        lastCmd = action;
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_START)
                 ||action.equals(ACTION_ADD_CALENDAR_EVENT)){
@@ -145,7 +144,7 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.putExtra("loc", loc);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         if(err == 0) {
-            if(calEventFlag.getAndSet(0) == 1){
+            if(calEventFlag.compareAndSet(1, 0)){
                 WeatherService.fetchPredictWeather(this.getApplicationContext(), loc);
                 LocationService.stop(getApplicationContext());
             } else {
@@ -155,6 +154,8 @@ public class LocationService extends Service implements AMapLocationListener {
                 weatherCnt++;
 
             }
+        } else {
+            LzLog.e(TAG, "got err: "+err);
         }
     }
 
