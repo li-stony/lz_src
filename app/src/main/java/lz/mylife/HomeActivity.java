@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -62,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //
     private View testDayBtn;
+    private TextView statusText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         pinBtn = findViewById(R.id.pin_btn);
         pinBtn.setOnClickListener(this);
         progress = findViewById(R.id.loading_progress);
+        statusText = (TextView) findViewById(R.id.status_bar);
         //
         IntentFilter filter = new IntentFilter();
         filter.addAction(LocationService.ACTION_LOCATION_CHANED);
@@ -96,8 +99,12 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         testDayBtn = findViewById(R.id.test_day_ev);
         testDayBtn.setOnClickListener(this);
 
+        //
+        statusText.setText(Environment.getExternalStorageDirectory().getAbsolutePath());
         // tomorrow at 6.00 add a weather event
         CalEventReceiver.startAlarmEvent(getApplicationContext(), 1);
+
+
 
     }
 
@@ -119,7 +126,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         Manifest.permission.CHANGE_CONFIGURATION,
                         Manifest.permission.WRITE_SETTINGS,
                         Manifest.permission.CHANGE_WIFI_STATE,
-                        Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
+                        Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+                        Manifest.permission.RECEIVE_BOOT_COMPLETED
                 },
                 1);
     }

@@ -156,11 +156,13 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <lz.view.BlockProgress
+    <TextView
+        android:id="@+id/status_bar"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:gravity="center"
-        android:textSize="18dp"
+        android:layout_height="wrap_content"
+        android:gravity="left|center"
+        android:textSize="12dp"
+        android:textColor="@color/colorPrimaryText"
         android:layout_alignParentBottom="true"
         />
     <lz.view.RectProgress
