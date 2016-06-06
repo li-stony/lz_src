@@ -181,6 +181,8 @@ public class WeatherService extends Service  {
                 this.text = obj1.optString("text");
                 this.highTemperature = Integer.parseInt(obj1.optString("high"));
                 this.lowTemperature = Integer.parseInt(obj1.optString("low"));
+                JSONObject obj2 = forecast.optJSONObject(1);
+
             }
         }
 
