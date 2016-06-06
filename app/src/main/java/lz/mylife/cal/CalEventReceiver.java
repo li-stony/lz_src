@@ -27,7 +27,7 @@ public class CalEventReceiver extends BroadcastReceiver {
         }
     }
 
-    static  boolean  test = true;
+    static  boolean  test = false;
     public static void startAlarmEvent(Context context, int dayDelta) {
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent();
