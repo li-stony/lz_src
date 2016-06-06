@@ -79,6 +79,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         calSpinner.setOnItemSelectedListener(this);
         pinBtn = findViewById(R.id.pin_btn);
         pinBtn.setOnClickListener(this);
+        progress = findViewById(R.id.loading_progress);
         //
         IntentFilter filter = new IntentFilter();
         filter.addAction(LocationService.ACTION_LOCATION_CHANED);
@@ -146,6 +147,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onStart();
         if(granted) {
             LocationService.start(this.getApplicationContext());
+            showProgress();
         }
     }
     @Override
@@ -154,7 +156,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         LocationService.stop(this.getApplicationContext());
         //WeatherService.stop(this.getApplicationContext());
     }
-
+    private View progress;
+    private void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress() {
+        progress.setVisibility(View.GONE);
+    }
     private void updateLocation(LocationService.LzLocation loc) {
         location = loc;
         if(loc.err == 0) {
@@ -191,6 +199,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 } catch (Exception e) {
                     LzLog.e(TAG, e.toString(), e);
                 }
+                hideProgress();
 
             } else if(action.equals(CalendarService.ACTION_EVENT_PINNED)) {
                 Long ev = intent.getLongExtra("event", -1);
@@ -201,6 +210,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     Intent calIntent = new Intent(Intent.ACTION_VIEW).setData(uri);
                     startActivity(calIntent);
                 }
+                hideProgress();
             }
         }
     };
@@ -210,10 +220,12 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         if(v == pinBtn) {
             if(weatherLive != null && location != null) {
                 CalendarService.addLiveWeatherEvent(this, location, weatherLive);
+                showProgress();
             }
         } else if ( v == testDayBtn ) {
             //LocationService.startPinWeatherEvent(this);
             CalEventReceiver.startAlarmEvent(this.getApplicationContext(), -1);
+            showProgress();
         }
     }
 

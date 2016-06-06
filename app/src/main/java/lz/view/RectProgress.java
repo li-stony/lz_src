@@ -18,11 +18,12 @@ public class RectProgress extends View implements ValueAnimator.AnimatorUpdateLi
     private ValueAnimator animator;
     Paint p1;
     Paint p2;
+    Paint p3;
 
     public RectProgress(Context context, AttributeSet attrs) {
         super(context, attrs);
         p1 = new Paint();
-        p1.setColor(ContextCompat.getColor(getContext(), 0x80D32F2F));
+        p1.setColor( 0xe0D32F2F);
         p1.setStyle(Paint.Style.FILL);
         p1.setAntiAlias(true);
         p1.setStrokeWidth(2);
@@ -31,6 +32,11 @@ public class RectProgress extends View implements ValueAnimator.AnimatorUpdateLi
         p2.setStyle(Paint.Style.STROKE);
         p2.setAntiAlias(true);
         p2.setStrokeWidth(3);
+        p3 = new Paint();
+        p3.setColor(0xffffffff);
+        p3.setStyle(Paint.Style.FILL);
+        p3.setAntiAlias(true);
+        p3.setStrokeWidth(5);
     }
 
 
@@ -38,7 +44,7 @@ public class RectProgress extends View implements ValueAnimator.AnimatorUpdateLi
     public void onAttachedToWindow(){
         super.onAttachedToWindow();
         animator = ValueAnimator.ofFloat(0, 1.0f);
-        animator.setDuration(2000);
+        animator.setDuration(6000);
         animator.setStartDelay((long) (1000 * Math.random()));
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setRepeatMode(ValueAnimator.RESTART);
@@ -53,14 +59,20 @@ public class RectProgress extends View implements ValueAnimator.AnimatorUpdateLi
         }
     }
 
-    private float calcLen(int[] start, int[] end) {
+    private float[] getPoint(float[] point1, float[] point2, float offset){
+        float[] point = new float[2];
+        point[0] = offset*(point2[0] - point1[0]) + point1[0];
+        point[1] = offset*(point2[1] - point1[1]) + point1[1];
+        return point;
+    }
+    private float calcLen(float[] start, float[] end) {
         double len = Math.sqrt((end[0]-start[0])*(end[0]-start[0]) + (end[1]-start[1])*(end[1]-start[1]));
         return (float)len;
     }
     private int findSegIndex ( float[] v, float value){
-        for(int i = v.length-1;i>=0;i--) {
+        for(int i = 0; i<v.length; i++) {
             if(value < v[i]) {
-                return i;
+                return i-1;
             }
         }
         return 0;
@@ -77,19 +89,25 @@ public class RectProgress extends View implements ValueAnimator.AnimatorUpdateLi
 
         int circleLen = 2*(x2-x1 + y2 - y1);
 
-        int[][] coord = new int[][] {
-            {x1,y1},{x1,y2},{x2,y2},{x1,y2}
+        float[][] coord = new float[][] {
+            {x1,y1},{x2,y1},{x2,y2},{x1,y2}
         };
-        float v[] = new float[coord.length];
-        for(int i=0;i<coord.length;i++) {
-            int ind1 = i;
-            int ind2 = (i+1) & coord.length;
+        float v[] = new float[coord.length+1];
+        v[0] = 0;
+        v[4] = circleLen;
+        for(int i=1; i<coord.length; i++) {
+            int ind1 = i-1;
+            int ind2 = i;
             v[i] = calcLen(coord[ind1], coord[ind2]);
         }
-        for(int i=1;i<v.length;i++){
+        for(int i=1;i<v.length-1;i++){
             v[i] = v[i] + v[i-1];
         }
-
+        /*
+        for(int i=0;i<v.length;i++) {
+            v[i] = v[i] / circleLen;
+        }
+        */
         float startValue = circleLen * (Float) animator.getAnimatedValue();
         float endValue = startValue + len;
         if (endValue > circleLen) {
@@ -97,10 +115,24 @@ public class RectProgress extends View implements ValueAnimator.AnimatorUpdateLi
         }
         int startInd = findSegIndex(v, startValue) ;
         int endInd = findSegIndex(v, endValue) ;
+
         // draw start point
-
+        {
+            float offset = 0;
+            float[] point = null;
+            offset = (startValue - v[startInd]) / (v[startInd+1] - v[startInd]);
+            point = getPoint(coord[startInd], coord[(startInd+1)%coord.length], offset);
+            canvas.drawLine(point[0], point[1], coord[(startInd+1)%coord.length][0], coord[(startInd+1)%coord.length][1], p2);
+        }
         // draw end point
-
+        {
+            float offset = 0;
+            float[] point = null;
+            offset = (endValue - v[endInd]) / (v[endInd+1] - v[endInd]);
+            point = getPoint(coord[endInd], coord[(endInd+1)%coord.length], offset);
+            canvas.drawLine(coord[endInd][0], coord[endInd][1], point[0], point[1],  p2);
+            canvas.drawCircle(point[0], point[1], 5.0f, p3);
+        }
         // draw middle seg
         if(endInd < startInd) {
             endInd += coord.length;

@@ -35,6 +35,8 @@ public class CalEventReceiver extends BroadcastReceiver {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         cal.set(Calendar.HOUR, 6);
+        cal.set(Calendar.MINUTE, 15);
+        cal.set(Calendar.SECOND, 0);
         cal.add(Calendar.DAY_OF_MONTH, dayDelta);
         alarm.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
