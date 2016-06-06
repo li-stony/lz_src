@@ -155,8 +155,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onStart();
         if(granted) {
             LocationService.start(this.getApplicationContext());
-            showProgress();
+
         }
+        showProgress();
     }
     @Override
     public void onStop() {
