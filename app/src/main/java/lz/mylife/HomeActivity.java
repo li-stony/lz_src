@@ -163,7 +163,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onStop() {
         super.onStop();
-        LocationService.stop(this.getApplicationContext());
+        LocationService.stop(this.getApplicationContext(), 0);
         //WeatherService.stop(this.getApplicationContext());
     }
     private View progress;

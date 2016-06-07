@@ -3,22 +3,32 @@ package lz.mylife.cal;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.PowerManager;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import lz.mylife.R;
 import lz.util.LzLog;
 
 /**
@@ -41,8 +51,7 @@ public class LocationService extends Service implements AMapLocationListener {
 
     private AtomicInteger calEventFlag = new AtomicInteger(0);
     private AtomicInteger serviceCnt = new AtomicInteger(0);
-
-
+    private PowerManager.WakeLock wakeLock;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -55,6 +64,24 @@ public class LocationService extends Service implements AMapLocationListener {
         mLocationClient = new AMapLocationClient(this);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.setLocationListener(this);
+
+        PowerManager pm = (PowerManager)this.getSystemService(
+                Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK,
+                "LocationService");
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(CalendarService.ACTION_EVENT_PINNED);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+
     }
     public static void start(Context context) {
         Intent intent = new Intent();
@@ -62,6 +89,7 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
+
     public static void startPinWeatherEvent(Context context) {
         Intent intent = new Intent();
         intent.setAction(ACTION_ADD_CALENDAR_EVENT);
@@ -69,9 +97,12 @@ public class LocationService extends Service implements AMapLocationListener {
         context.startService(intent);
     }
 
-    public static void stop(Context context) {
+    public static final int ERR_NO_ERROR = 0;
+    public static final int ERR_NO_LOCATION = 1001;
+    public static void stop(Context context, int err) {
         Intent intent = new Intent();
         intent.setAction(ACTION_STOP);
+        intent.putExtra("err", err);
         intent.setClass(context, LocationService.class);
         context.startService(intent);
     }
@@ -98,6 +129,7 @@ public class LocationService extends Service implements AMapLocationListener {
         LzLog.d(TAG, "received command: "+action);
         if(action.equals(ACTION_START)
                 ||action.equals(ACTION_ADD_CALENDAR_EVENT)){
+
             int cnt = serviceCnt.addAndGet(1);
             LzLog.d(TAG, "LocationService start "+cnt);
             if(!mLocationClient.isStarted()) {
@@ -105,11 +137,16 @@ public class LocationService extends Service implements AMapLocationListener {
             }
             if(action.equals(ACTION_ADD_CALENDAR_EVENT)){
                 calEventFlag.set(1);
+                wakeLock.acquire();
             }
         } else {
             int cnt = serviceCnt.addAndGet(-1);
             if(cnt == 0) {
                 LzLog.d(TAG, "LocationService stop...");
+                if(calEventFlag.getAndSet(0) == 1) {
+                    wakeLock.release();
+                }
+                errCnt = 0;
                 if(mLocationClient.isStarted()) {
                     mLocationClient.stopLocation();
                 }
@@ -126,6 +163,7 @@ public class LocationService extends Service implements AMapLocationListener {
         return null;
     }
 
+    int errCnt = 0;
     int weatherCnt = 0;
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
@@ -144,9 +182,10 @@ public class LocationService extends Service implements AMapLocationListener {
         intent.putExtra("loc", loc);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         if(err == 0) {
+            errCnt = 0;
             if(calEventFlag.compareAndSet(1, 0)){
                 WeatherService.fetchPredictWeather(this.getApplicationContext(), loc);
-                LocationService.stop(getApplicationContext());
+                LocationService.stop(getApplicationContext(), 0);
             } else {
                 if (weatherCnt % 720 == 0) {
                     WeatherService.fetchLiveWeather(this.getApplicationContext(), loc);
@@ -156,6 +195,10 @@ public class LocationService extends Service implements AMapLocationListener {
             }
         } else {
             LzLog.e(TAG, "got err: "+err);
+            errCnt ++ ;
+            if(errCnt > 100) {
+                LocationService.stop(getApplicationContext(), ERR_NO_LOCATION);
+            }
         }
     }
 
@@ -216,4 +259,16 @@ public class LocationService extends Service implements AMapLocationListener {
             }
         };
     }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(CalendarService.ACTION_EVENT_PINNED)) {
+                //
+                LzLog.d(TAG, "calendar event pinned");
+                wakeLock.release();
+            }
+        }
+    };
 }

@@ -29,6 +29,7 @@ public class CalEventReceiver extends BroadcastReceiver {
                     PowerManager.PARTIAL_WAKE_LOCK,
                     "CalEventReceiver");
 
+            wl.acquire(5000);
             LocationService.startPinWeatherEvent(context);
             startAlarmEvent( context, 1);
         }
