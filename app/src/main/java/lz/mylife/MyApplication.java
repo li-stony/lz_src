@@ -2,6 +2,7 @@ package lz.mylife;
 
 import android.app.Application;
 
+import lz.common.LzExceptionHandler;
 import lz.util.LzGlobalStates;
 
 /**
@@ -11,5 +12,6 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
         LzGlobalStates.globalContext = this.getApplicationContext();
+        Thread.setDefaultUncaughtExceptionHandler(new LzExceptionHandler(this.getApplicationContext()));
     }
 }

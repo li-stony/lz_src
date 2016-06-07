@@ -169,8 +169,6 @@ public class CalendarService extends Service {
 
             } catch (SecurityException e) {
                 LzLog.e(TAG, e.toString(), e);
-            } catch (Exception e) {
-                LzLog.e(TAG, e.toString(), e);
             } finally {
                 if(cur != null) {
                     cur.close();

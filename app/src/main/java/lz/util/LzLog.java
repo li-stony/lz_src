@@ -15,4 +15,5 @@ public class LzLog {
     public static void e(String tag, String msg, Throwable e) {
         Log.e(tag, msg, e);
     }
+
 }

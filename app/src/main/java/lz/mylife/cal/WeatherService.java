@@ -128,7 +128,10 @@ public class WeatherService extends Service  {
                     );
             return str;
         }
-
+        public LzWeatherLive() {
+            this.json = null;
+            summary = "err: volley";
+        }
         public LzWeatherLive(JSONObject json) {
             this.json = json;
             JSONObject result =  json.optJSONObject("query").optJSONObject("results").optJSONObject("channel");
@@ -218,7 +221,7 @@ public class WeatherService extends Service  {
                     }
 
                 } catch (Exception e) {
-                    LzLog.e(TAG, e.getMessage(), e);
+                    LzLog.e(TAG, e.toString(), e);
                 }
 
             }
@@ -226,6 +229,7 @@ public class WeatherService extends Service  {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 LzLog.e(TAG, volleyError.toString());
+                sendWeatherBroadcast(ACTION_LIVE_WEATHER_GOT, new LzWeatherLive());
             }
         });
         Volley.getDefaultRequestQueue(this).add(req);

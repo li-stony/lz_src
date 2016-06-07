@@ -41,7 +41,7 @@ public class CalEventReceiver extends BroadcastReceiver {
             cal.set(Calendar.SECOND, 0);
             cal.add(Calendar.DAY_OF_MONTH, dayDelta);
         } else {
-            cal.add(Calendar.MINUTE, 5);
+            cal.add(Calendar.MINUTE, 15);
         }
         alarm.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
