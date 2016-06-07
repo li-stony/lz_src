@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 
 import java.util.Calendar;
 
@@ -22,6 +23,12 @@ public class CalEventReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         LzLog.d("CalEventReceiver", "receive: "+action);
         if(action.equals("lz.mylife.CAL_EVENT_ACTION")){
+            PowerManager pm = (PowerManager)context.getSystemService(
+                    Context.POWER_SERVICE);
+            PowerManager.WakeLock wl = pm.newWakeLock(
+                    PowerManager.PARTIAL_WAKE_LOCK,
+                    "CalEventReceiver");
+
             LocationService.startPinWeatherEvent(context);
             startAlarmEvent( context, 1);
         }
