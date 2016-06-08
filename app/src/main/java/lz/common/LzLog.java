@@ -27,8 +27,8 @@ public class LzLog {
         String path = logFolder + File.separator + fileName;
         File file = new File(path);
         try {
-            writer = new PrintWriter(file);
-        } catch (FileNotFoundException e) {
+            writer = new PrintWriter(file, "UTF-8");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
