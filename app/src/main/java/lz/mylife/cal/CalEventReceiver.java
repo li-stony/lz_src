@@ -9,7 +9,8 @@ import android.os.PowerManager;
 
 import java.util.Calendar;
 
-import lz.util.LzLog;
+import lz.common.LzLog;
+import lz.mylife.BuildConfig;
 
 /**
  * Created by cussyou on 2016-06-03.
@@ -35,7 +36,6 @@ public class CalEventReceiver extends BroadcastReceiver {
         }
     }
 
-    static  boolean  test = false;
     public static void startAlarmEvent(Context context, int dayDelta) {
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent();
@@ -43,13 +43,13 @@ public class CalEventReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 99, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
-        if(!test) {
+        if(!BuildConfig.TEST_ENABLED) {
             cal.set(Calendar.HOUR, 6);
             cal.set(Calendar.MINUTE, 15);
             cal.set(Calendar.SECOND, 0);
             cal.add(Calendar.DAY_OF_MONTH, dayDelta);
         } else {
-            cal.add(Calendar.MINUTE, 15);
+            cal.add(Calendar.HOUR, 1);
         }
         alarm.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }

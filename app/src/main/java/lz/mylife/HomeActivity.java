@@ -1,8 +1,6 @@
 package lz.mylife;
 
 import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -31,15 +29,13 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.zip.Inflater;
 
 import lz.mylife.cal.CalEventReceiver;
 import lz.mylife.cal.CalendarService;
 import lz.mylife.cal.LocationService;
 import lz.mylife.cal.WeatherService;
 import lz.util.LzGlobalStates;
-import lz.util.LzLog;
+import lz.common.LzLog;
 import lz.util.SystemBarUtil;
 
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {

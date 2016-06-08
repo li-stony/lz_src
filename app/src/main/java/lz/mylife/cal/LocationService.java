@@ -1,35 +1,25 @@
 package lz.mylife.cal;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.PowerManager;
-import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
-import org.json.JSONObject;
-
-import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import lz.mylife.R;
-import lz.util.LzLog;
+import lz.common.LzLog;
 
 /**
  * Created by cussyou on 2016-05-18.

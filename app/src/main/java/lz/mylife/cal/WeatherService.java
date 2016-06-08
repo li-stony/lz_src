@@ -1,6 +1,5 @@
 package lz.mylife.cal;
 
-import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -23,7 +21,7 @@ import java.util.Date;
 
 import lz.mylife.R;
 import lz.util.LzGlobalStates;
-import lz.util.LzLog;
+import lz.common.LzLog;
 
 /**
  * Created by cussyou on 2016-05-18.

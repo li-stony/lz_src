@@ -1,15 +1,12 @@
 package lz.mylife.cal;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -20,13 +17,10 @@ import android.text.TextUtils;
 
 import org.json.JSONObject;
 
-import java.security.Permission;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
-import lz.util.LzLog;
-import lz.util.SystemBarUtil;
+import lz.common.LzLog;
 
 /**
  * Created by cussyou on 2016-05-19.

@@ -1,20 +1,12 @@
 package lz.common;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Environment;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import lz.util.LzLog;
 
 /**
  * Created by cussyou on 2016-06-07.
@@ -22,18 +14,22 @@ import lz.util.LzLog;
 public class LzExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private Context context;
+    private String logFolder;
     public LzExceptionHandler (Context context) {
         this.context = context;
+        logFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "lzlog";
+        File f = new File(logFolder);
+        if(!f.exists()){
+            f.mkdirs();
+        }
     }
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         LzLog.e("err", context.getPackageName() + " crashed");
         try {
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(System.currentTimeMillis());
-
-            String fileName = "err_" + System.currentTimeMillis() + ".log";
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "lzlog" + File.separator + fileName;
+            String fileName = new SimpleDateFormat("'ERR'_yyyyMMdd_HHmmss'.txt'")
+                    .format(System.currentTimeMillis());
+            String path = logFolder + File.separator + fileName;
             File file = new File(path);
             PrintWriter printWriter = new PrintWriter(file);
             printWriter.println("In thread:"+thread.getName()+"-"+thread.getId()+" crashed");
