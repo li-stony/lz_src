@@ -127,14 +127,16 @@ public class LocationService extends Service implements AMapLocationListener {
             }
             if(action.equals(ACTION_ADD_CALENDAR_EVENT)){
                 calEventFlag.set(1);
-                wakeLock.acquire();
+                wakeLock.acquire(60);
+                LzLog.d(TAG, "wakeLock.acquire()");
             }
         } else {
             int cnt = serviceCnt.addAndGet(-1);
             if(cnt == 0) {
                 LzLog.d(TAG, "LocationService stop...");
-                if(calEventFlag.getAndSet(0) == 1) {
+                if(wakeLock.isHeld()) {
                     wakeLock.release();
+                    LzLog.d(TAG, "wakeLock.release()");
                 }
                 errCnt = 0;
                 if(mLocationClient.isStarted()) {
@@ -175,7 +177,7 @@ public class LocationService extends Service implements AMapLocationListener {
             errCnt = 0;
             if(calEventFlag.compareAndSet(1, 0)){
                 WeatherService.fetchPredictWeather(this.getApplicationContext(), loc);
-                LocationService.stop(getApplicationContext(), 0);
+
             } else {
                 if (weatherCnt % 720 == 0) {
                     WeatherService.fetchLiveWeather(this.getApplicationContext(), loc);
@@ -253,11 +255,16 @@ public class LocationService extends Service implements AMapLocationListener {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent == null) {
+                LzLog.e(TAG, "LocationService.receiver intent=null");
+                return;
+            }
             String action = intent.getAction();
+            LzLog.d(TAG, "LocationService received: "+action);
             if(action.equals(CalendarService.ACTION_EVENT_PINNED)) {
                 //
                 LzLog.d(TAG, "calendar event pinned");
-                wakeLock.release();
+                LocationService.stop(getApplicationContext(), 0);
             }
         }
     };

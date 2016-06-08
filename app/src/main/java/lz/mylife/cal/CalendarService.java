@@ -160,7 +160,7 @@ public class CalendarService extends Service {
                 // get the event ID that is the last element in the Uri
                 long eventID = Long.parseLong(uri.getLastPathSegment());
                 evId = eventID;
-
+                LzLog.d(TAG, "inserted event: "+eventID);
             } catch (SecurityException e) {
                 LzLog.e(TAG, e.toString(), e);
             } finally {
