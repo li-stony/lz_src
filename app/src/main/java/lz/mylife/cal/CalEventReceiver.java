@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import lz.common.LzLog;
@@ -23,7 +24,8 @@ public class CalEventReceiver extends BroadcastReceiver {
         }
         String action = intent.getAction();
         LzLog.d("CalEventReceiver", "receive: "+action);
-        if(action.equals("lz.mylife.CAL_EVENT_ACTION")){
+        if(action.equals("lz.mylife.CAL_EVENT_ACTION")
+                || action.equals(Intent.ACTION_BOOT_COMPLETED)){
             PowerManager pm = (PowerManager)context.getSystemService(
                     Context.POWER_SERVICE);
             PowerManager.WakeLock wl = pm.newWakeLock(
@@ -35,7 +37,7 @@ public class CalEventReceiver extends BroadcastReceiver {
             startAlarmEvent( context, 1);
         }
     }
-    static boolean test = true;
+    static boolean test = false;
     public static void startAlarmEvent(Context context, int dayDelta) {
         AlarmManager alarm = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent();
@@ -44,13 +46,16 @@ public class CalEventReceiver extends BroadcastReceiver {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         if(!test) {
-            cal.set(Calendar.HOUR, 6);
+            cal.set(Calendar.HOUR_OF_DAY, 6);
             cal.set(Calendar.MINUTE, 15);
             cal.set(Calendar.SECOND, 0);
             cal.add(Calendar.DAY_OF_MONTH, dayDelta);
         } else {
             cal.add(Calendar.HOUR, 2);
         }
+        String time = new SimpleDateFormat("yyyyMMdd-HHmmss")
+                .format(cal.getTimeInMillis());
+        LzLog.d("CalEventReceiver", "Alarm at "+time);
         alarm.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 }

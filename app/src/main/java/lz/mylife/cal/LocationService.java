@@ -127,7 +127,7 @@ public class LocationService extends Service implements AMapLocationListener {
             }
             if(action.equals(ACTION_ADD_CALENDAR_EVENT)){
                 calEventFlag.set(1);
-                wakeLock.acquire(60);
+                wakeLock.acquire(45000);
                 LzLog.d(TAG, "wakeLock.acquire()");
             }
         } else {

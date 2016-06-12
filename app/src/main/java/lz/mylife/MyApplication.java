@@ -16,8 +16,10 @@ public class MyApplication extends Application{
         Thread.setDefaultUncaughtExceptionHandler(new LzExceptionHandler(this.getApplicationContext()));
         LzLog.createInstance();
     }
+    @Override
     public void onTerminate() {
-        super.onTerminate();
         LzLog.destroyInstance();
+        super.onTerminate();
+
     }
 }
