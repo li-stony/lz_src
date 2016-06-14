@@ -33,7 +33,7 @@ public class LzLog {
         }
     }
     private void println(String tag, String msg) {
-        if(BuildConfig.DEBUG) {
+        if(BuildConfig.TEST_ENABLED) {
             String time = new SimpleDateFormat("yyyyMMdd-HHmmssSSS")
                     .format(System.currentTimeMillis());
             String fmt = "%s [%s](%s) %s";
@@ -75,15 +75,21 @@ public class LzLog {
 
     public static void d(String tag, String text) {
         Log.d(tag, text);
-        lzLog.println(tag,text);
+        if(BuildConfig.TEST_ENABLED) {
+            lzLog.println(tag, text);
+        }
     }
     public static void e(String tag, String msg) {
         Log.e(tag, msg);
-        lzLog.println(tag,msg);
+        if(BuildConfig.TEST_ENABLED) {
+            lzLog.println(tag, msg);
+        }
     }
     public static void e(String tag, String msg, Throwable e) {
         Log.e(tag, msg, e);
-        lzLog.println(tag, msg, e);
+        if(BuildConfig.TEST_ENABLED) {
+            lzLog.println(tag, msg, e);
+        }
     }
 
 }
