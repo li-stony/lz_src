@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">MyLife</string>
+
+    <string name="location_title">位置</string>
+    <string name="location_text">%1$s</string>
+    <string name="lat_lon_text">(%1$.4f,%2$.4f)</string>
+
+    <string name="weather_title">天气</string>
+    <string name="weather_now_fmt">%1$s | 温度:%2$d℃ | 风:%3$d° %4$.2fkm/s </string>
+    <string name="weather_day_fmt">%1$s | 温度:%2$d-%3$d ℃ | 风:%4$d° %5$.2fkm/s</string>
+
+    <string name="event_pinned_error">添加日历事件失败</string>
+
+    <string name="code_0">龙卷风</string>
+    <string name="code_1">热带风暴</string>
+    <string name="code_2">飓风</string>
+    <string name="code_3">强雷暴雨</string>
+    <string name="code_4">雷暴雨</string>
+    <string name="code_5">雨夹雪</string>
+    <string name="code_6">雨夹冻雨</string>
+    <string name="code_7">雪夹冻雨</string>
+    <string name="code_8">冰冻小雨</string>
+    <string name="code_9">小雨</string>
+    <string name="code_10">冰冻雨</string>
+    <string name="code_11">阵雨</string>
+    <string name="code_12">阵雨</string>
+    <string name="code_13">阵雪</string>
+    <string name="code_14">小阵雪</string>
+    <string name="code_15">飘雪</string>
+    <string name="code_16">雪</string>
+    <string name="code_17">冰雹</string>
+    <string name="code_18">冻雨</string>
+    <string name="code_19">尘</string>
+    <string name="code_20">雾</string>
+    <string name="code_21">霾</string>
+    <string name="code_22">烟</string>
+    <string name="code_23">狂风</string>
+    <string name="code_24">风</string>
+    <string name="code_25">冷</string>
+    <string name="code_26">多云</string>
+    <string name="code_27">夜间大部多云</string>
+    <string name="code_28">日间大部多云</string>
+    <string name="code_29">夜间少云</string>
+    <string name="code_30">日间少云</string>
+    <string name="code_31">夜间晴</string>
+    <string name="code_32">晴</string>
+    <string name="code_33">夜间良好</string>
+    <string name="code_34">日间良好</string>
+    <string name="code_35">雨夹冰雹</string>
+    <string name="code_36">热</string>
+    <string name="code_37">局部雷雨</string>
+    <string name="code_38">偶有雷雨</string>
+    <string name="code_39">偶有雷雨</string>
+    <string name="code_40">偶有阵雨</string>
+    <string name="code_41">大雪</string>
+    <string name="code_42">偶有阵雪</string>
+    <string name="code_43">大雪</string>
+    <string name="code_44">少云</string>
+    <string name="code_45">雷雨</string>
+    <string name="code_46">阵雪</string>
+    <string name="code_47">局部雷雨</string>
+    <string name="code_3200">非法</string>
+
+</resources>

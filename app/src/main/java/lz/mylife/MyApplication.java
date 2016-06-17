@@ -4,6 +4,7 @@ import android.app.Application;
 
 import lz.common.LzExceptionHandler;
 import lz.common.LzLog;
+import lz.mylife.cal.YahooWeatherCode;
 import lz.util.LzGlobalStates;
 
 /**
@@ -15,6 +16,7 @@ public class MyApplication extends Application{
         LzGlobalStates.globalContext = this.getApplicationContext();
         Thread.setDefaultUncaughtExceptionHandler(new LzExceptionHandler(this.getApplicationContext()));
         LzLog.createInstance();
+
     }
     @Override
     public void onTerminate() {

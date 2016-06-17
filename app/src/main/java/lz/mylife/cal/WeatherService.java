@@ -36,8 +36,10 @@ public class WeatherService extends Service  {
     public static final String ACTION_PREDICT_WEATHER = "predict_weather";
     public static final String ACTION_STOP = "stop";
 
+
     public void onCreate() {
         super.onCreate();
+        YahooWeatherCode.init();
     }
     @Nullable
     @Override
@@ -119,7 +121,7 @@ public class WeatherService extends Service  {
 
         public String toString() {
             String str = LzGlobalStates.globalContext.getResources().getString(R.string.weather_now_fmt,
-                    summary,
+                    LzGlobalStates.globalContext.getString(YahooWeatherCode.weatherCodes.get(code)),
                     temperature,
                     windDirectionDegree,
                     windSpeed
@@ -153,8 +155,8 @@ public class WeatherService extends Service  {
         // 天气现象文字
         public String text;
         // 天气现象代码
-        public String code;
-
+        public String code1;
+        public String code2;
         // 当天最高温度
         public int highTemperature;
         // 当天最低温度
@@ -162,8 +164,11 @@ public class WeatherService extends Service  {
 
         @Override
         public String toString() {
+            String summary = String.format("%s-%s",
+                    LzGlobalStates.globalContext.getString(YahooWeatherCode.weatherCodes.get(code1)),
+                    LzGlobalStates.globalContext.getString(YahooWeatherCode.weatherCodes.get(code2)));
             String str = LzGlobalStates.globalContext.getResources().getString(R.string.weather_day_fmt,
-                    text,
+                    summary,
                     lowTemperature,
                     highTemperature,
                     windDirectionDegree,
@@ -178,14 +183,13 @@ public class WeatherService extends Service  {
             JSONArray forecast = result.optJSONObject("item").optJSONArray("forecast");
             if(forecast!= null &&forecast.length()>0){
                 JSONObject obj1 = forecast.optJSONObject(0);
-                this.code = obj1.optString("code");
+                this.code1 = obj1.optString("code");
                 this.text = obj1.optString("text");
                 this.highTemperature = Integer.parseInt(obj1.optString("high"));
                 this.lowTemperature = Integer.parseInt(obj1.optString("low"));
                 JSONObject obj2 = forecast.optJSONObject(1);
                 if(obj2 != null) {
-                    String text2 = obj2.optString("text");
-                    this.text = this.text + " - " + text2;
+                    this.code2 = obj2.optString("code");
                 }
             }
         }
