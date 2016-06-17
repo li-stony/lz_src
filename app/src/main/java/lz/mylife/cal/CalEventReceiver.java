@@ -33,7 +33,10 @@ public class CalEventReceiver extends BroadcastReceiver {
                     "CalEventReceiver");
 
             wl.acquire(5000);
-            LocationService.startPinWeatherEvent(context);
+            // not pin it after reboot.
+            if(action.equals("lz.mylife.CAL_EVENT_ACTION")) {
+                LocationService.startPinWeatherEvent(context);
+            }
             startAlarmEvent( context, 1);
         }
     }
