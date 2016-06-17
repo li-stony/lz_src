@@ -2,6 +2,8 @@ package lz.mylife;
 
 import android.app.Application;
 
+import com.autonavi.indoor.constant.Configuration;
+
 import lz.common.LzExceptionHandler;
 import lz.common.LzLog;
 import lz.mylife.cal.YahooWeatherCode;
@@ -16,6 +18,7 @@ public class MyApplication extends Application{
         LzGlobalStates.globalContext = this.getApplicationContext();
         Thread.setDefaultUncaughtExceptionHandler(new LzExceptionHandler(this.getApplicationContext()));
         LzLog.createInstance();
+
 
     }
     @Override

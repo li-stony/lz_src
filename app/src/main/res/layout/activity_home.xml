@@ -83,6 +83,16 @@
                         android:textColor="@color/colorSecondaryText"
                         android:text="@string/lat_lon_text"
                         android:textSize="16dp"/>
+                    <TextView
+                        android:id="@+id/indoor_loc_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/loc_id"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorSecondaryText"
+                        android:text=""
+                        android:textSize="16dp"
+                    />
                 </RelativeLayout>
 
                 <View

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,6 +17,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.autonavi.indoor.constant.Configuration;
+import com.autonavi.indoor.location.ILocationManager;
+import com.autonavi.indoor.onlinelocation.LocationManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -42,6 +46,9 @@ public class LocationService extends Service implements AMapLocationListener {
     private AtomicInteger calEventFlag = new AtomicInteger(0);
     private AtomicInteger serviceCnt = new AtomicInteger(0);
     private PowerManager.WakeLock wakeLock;
+
+    // indoor
+    private ILocationManager indoorMgr = null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -65,6 +72,7 @@ public class LocationService extends Service implements AMapLocationListener {
         filter.addAction(CalendarService.ACTION_EVENT_PINNED);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
 
+        //
     }
 
     @Override
@@ -268,4 +276,5 @@ public class LocationService extends Service implements AMapLocationListener {
             }
         }
     };
+
 }

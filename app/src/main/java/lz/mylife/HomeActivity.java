@@ -124,7 +124,12 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         Manifest.permission.CHANGE_WIFI_STATE,
                         Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
                         Manifest.permission.RECEIVE_BOOT_COMPLETED,
-                        Manifest.permission.WAKE_LOCK
+                        Manifest.permission.WAKE_LOCK,
+                        Manifest.permission.BLUETOOTH,
+                        Manifest.permission.BLUETOOTH_ADMIN,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CHANGE_NETWORK_STATE,
+                        Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
                 },
                 1);
     }
