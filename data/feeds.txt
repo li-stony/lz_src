@@ -30,3 +30,5 @@ http://www.nginx.cn/feed
 http://www.matrix67.com/blog/feed
 # Linux Story
 http://feeds.feedburner.com/Linux_Story
+# 技术小黑屋
+http://droidyue.com/atom.xml
