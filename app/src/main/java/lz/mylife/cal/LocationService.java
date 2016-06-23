@@ -147,6 +147,7 @@ public class LocationService extends Service implements AMapLocationListener {
                     LzLog.d(TAG, "wakeLock.release()");
                 }
                 errCnt = 0;
+                weatherCnt = 0;
                 if(mLocationClient.isStarted()) {
                     mLocationClient.stopLocation();
                 }

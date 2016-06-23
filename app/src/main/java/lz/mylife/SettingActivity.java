@@ -33,11 +33,12 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
 
     public static final String ACTION_SETTING_CHANGED = "lz.mylife.setting_changed";
     public static final String KEY_CAL_ACCOUNT = "calAccount";
+    public static final String KEY_CAL_ID = "calId";
     public static final String KEY_ALARM_TIME = "alarmTime";
 
     private static final String TAG = "setting";
     private Spinner calSpinner;
-    private ArrayAdapter<String> calAdapter;
+    private ArrayAdapter<CalendarStruct> calAdapter;
 
     private SharedPreferences pref ;
     private String calAccount = null;
@@ -53,9 +54,11 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
         calSpinner = (Spinner) findViewById(R.id.calendar_spinner);
         calSpinner.setAdapter(calAdapter);
         calSpinner.setOnItemSelectedListener(this);
+
         alarmTime = (TextView) findViewById(R.id.alarm_time);
         alarmTime.setText(pref.getString(KEY_ALARM_TIME, "06:15"));
         alarmTime.setOnClickListener(this);
+
         new CalendarListTask().execute();
     }
 
@@ -77,7 +80,11 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private class CalAdapter extends ArrayAdapter<String> {
+    private class CalendarStruct {
+        public String accountName;
+        public long id;
+    }
+    private class CalAdapter extends ArrayAdapter<CalendarStruct> {
 
         public CalAdapter(Context context) {
             super(context, 0);
@@ -90,8 +97,8 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
 
             }
             TextView tv = (TextView) convertView.findViewById(R.id.account_name);
-            String name = getItem(position);
-            tv.setText(name);
+            CalendarStruct account = getItem(position);
+            tv.setText(account.accountName);
             return convertView;
         }
         @Override
@@ -101,25 +108,31 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
 
             }
             TextView tv = (TextView) convertView.findViewById(R.id.account_name);
-            String name = getItem(position);
-            tv.setText(name);
+            CalendarStruct account = getItem(position);
+            tv.setText(account.accountName);
             return convertView;
         }
     };
-    private class CalendarListTask extends AsyncTask<Void, Void, String[]> {
+    private class CalendarListTask extends AsyncTask<Void, Void, CalendarStruct[]> {
         @Override
-        protected String[] doInBackground(Void... params) {
-            ArrayList<String> results = new ArrayList<>();
+        protected CalendarStruct[] doInBackground(Void... params) {
+            ArrayList<CalendarStruct> results = new ArrayList<>();
             Cursor cur = null;
             try {
-
                 ContentResolver cr = getContentResolver();
                 Uri uri = CalendarContract.Calendars.CONTENT_URI;
                 cur = cr.query(uri, null, null, null, null);
                 while(cur.moveToNext()) {
                     long id = cur.getLong(cur.getColumnIndex(CalendarContract.Calendars._ID));
                     String calAccount = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME));
-                    results.add(calAccount);
+                    String calName = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME));
+                    String deleted = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.DELETED));
+                    //String dirty = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.DIRTY));
+                    LzLog.d(TAG, id+" " +calAccount+" "+calName + " "+deleted + " ");
+                    CalendarStruct account = new CalendarStruct();
+                    account.accountName = calAccount + " " + calName;
+                    account.id = id;
+                    results.add(account);
                 }
 
             } catch (SecurityException e) {
@@ -131,18 +144,18 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
                     cur.close();
                 }
             }
-            String[] re = new String[results.size()];
+            CalendarStruct[] re = new CalendarStruct[results.size()];
             return results.toArray(re);
         }
 
         @Override
-        protected void onPostExecute(String[] results) {
+        protected void onPostExecute(CalendarStruct[] results) {
             calAdapter.clear();
             calAdapter.addAll(results);
             calAdapter.notifyDataSetChanged();
             calAccount = pref.getString(KEY_CAL_ACCOUNT, "");
             for(int i=0;i<results.length;i++) {
-                if(calAccount.equals(results[i])){
+                if(calAccount.equals(results[i].accountName)){
                     calSpinner.setSelection(i);
                 }
             }
@@ -150,9 +163,12 @@ public class SettingActivity extends Activity implements AdapterView.OnItemSelec
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = calAdapter.getItem(position);
-        calAccount = item;
-        pref.edit().putString(KEY_CAL_ACCOUNT, calAccount).commit();
+        CalendarStruct item = calAdapter.getItem(position);
+        calAccount = item.accountName;
+        pref.edit().putString(KEY_CAL_ACCOUNT, calAccount)
+                .putLong(KEY_CAL_ID, item.id)
+                .commit();
+
         LzLog.d(TAG, "calAccount="+calAccount);
         Intent intent = new Intent();
         intent.setAction(ACTION_SETTING_CHANGED);

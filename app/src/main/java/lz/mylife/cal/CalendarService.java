@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import lz.common.LzLog;
+import lz.mylife.SettingActivity;
 
 /**
  * Created by cussyou on 2016-05-19.
@@ -173,11 +174,11 @@ public class CalendarService extends Service {
         @Override
         protected Long doInBackground(Double... params) {
             SharedPreferences pref = getSharedPreferences("mylife", 0);
-            String account = pref.getString("calAccount", "");
-            if(TextUtils.isEmpty(account)) {
+            long calId = pref.getLong(SettingActivity.KEY_CAL_ID, -1);
+            if(calId == -1L) {
+                LzLog.e(TAG, "no calendar selected");
                 return -1L;
             }
-            long calId = getDestCal(account);
             long evId = insertEvent(calId);
 
             return evId;
