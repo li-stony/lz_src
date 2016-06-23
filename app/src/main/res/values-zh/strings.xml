@@ -61,4 +61,6 @@
     <string name="code_47">局部雷雨</string>
     <string name="code_3200">非法</string>
 
+    <string name="setting_account">账号</string>
+    <string name="setting_time">时间</string>
 </resources>
