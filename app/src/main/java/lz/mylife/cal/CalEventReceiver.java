@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.PowerManager;
 
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.Calendar;
 
 import lz.common.LzLog;
 import lz.mylife.BuildConfig;
+import lz.mylife.SettingActivity;
 
 /**
  * Created by cussyou on 2016-06-03.
@@ -49,8 +51,13 @@ public class CalEventReceiver extends BroadcastReceiver {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         if(!test) {
-            cal.set(Calendar.HOUR_OF_DAY, 6);
-            cal.set(Calendar.MINUTE, 15);
+            SharedPreferences pref = context.getSharedPreferences("mylife", 0);
+            String timeStr = pref.getString(SettingActivity.KEY_ALARM_TIME, "06:15");
+            String[] tokens = timeStr.split(":");
+            int hour = Integer.parseInt(tokens[0]);
+            int minute = Integer.parseInt(tokens[1]);
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE, minute);
             cal.set(Calendar.SECOND, 0);
             cal.add(Calendar.DAY_OF_MONTH, dayDelta);
         } else {

@@ -151,7 +151,7 @@ public class CalendarService extends Service {
                 ContentValues values = new ContentValues();values.put(CalendarContract.Events.DTSTART, now.getTimeInMillis());
                 values.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
                 // MyEvent:
-                values.put(CalendarContract.Events.TITLE, "MyEvent:"+weather.toString());
+                values.put(CalendarContract.Events.TITLE, "MyEvent: "+weather.toString());
                 values.put(CalendarContract.Events.EVENT_LOCATION, loc.toAddressString());
                 values.put(CalendarContract.Events.DESCRIPTION, "Created by MyLife");
                 values.put(CalendarContract.Events.CALENDAR_ID, calId);

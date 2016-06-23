@@ -38,21 +38,17 @@ import lz.util.LzGlobalStates;
 import lz.common.LzLog;
 import lz.util.SystemBarUtil;
 
-public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String TAG = getClass().getSimpleName();
     private TextView addressTv;
     private TextView locTv;
     private TextView weatherTv;
 
-    private Spinner calSpinner;
-    private ArrayAdapter<String> calAdapter;
-
     private LocationService.LzLocation location;
     private WeatherService.LzWeatherLive weatherLive;
     private WeatherService.LzWeatherDay weatherDay;
 
-    private String calAccount = null;
     SharedPreferences pref ;
 
     private View pinBtn;
@@ -60,21 +56,26 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     //
     private View testDayBtn;
     private TextView statusText;
+
+    private TextView accountTv ;
+    private TextView timeTv;
+    private View settingBtn ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         SystemBarUtil.setSystemBar(this);
-        LzGlobalStates.globalContext = this.getApplicationContext();
+
+        settingBtn = findViewById(R.id.edit_setting_btn);
+        settingBtn.setOnClickListener(this);
+
+        accountTv = (TextView) findViewById(R.id.selected_account_name);
+        timeTv = (TextView) findViewById(R.id.selected_alarm_time);
 
         addressTv = (TextView) findViewById(R.id.loc_text_id);
         locTv = (TextView) findViewById(R.id.loc_id);
         weatherTv = (TextView) findViewById(R.id.weather_text);
-        calAdapter = new CalAdapter(this);
-        calAdapter.setDropDownViewResource(R.layout.cal_list_item);
-        calSpinner = (Spinner) findViewById(R.id.calendar_spinner);
-        calSpinner.setAdapter(calAdapter);
-        calSpinner.setOnItemSelectedListener(this);
+
         pinBtn = findViewById(R.id.pin_btn);
         pinBtn.setOnClickListener(this);
         progress = findViewById(R.id.loading_progress);
@@ -85,11 +86,14 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         filter.addAction(WeatherService.ACTION_LIVE_WEATHER_GOT);
         filter.addAction(WeatherService.ACTION_PREDICT_WEATHER_GOT);
         filter.addAction(CalendarService.ACTION_EVENT_PINNED);
+        filter.addAction(SettingActivity.ACTION_SETTING_CHANGED);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
 
         initPermissions();
-
+        // init variable
         pref = getSharedPreferences("mylife", 0);
+        accountTv.setText(pref.getString(SettingActivity.KEY_CAL_ACCOUNT, ""));
+        timeTv.setText(pref.getString(SettingActivity.KEY_ALARM_TIME, "06:15"));
 
         //
         testDayBtn = findViewById(R.id.test_day_ev);
@@ -99,8 +103,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         statusText.setText(Environment.getExternalStorageDirectory().getAbsolutePath());
         // tomorrow at 6.00 add a weather event
         CalEventReceiver.startAlarmEvent(getApplicationContext(), 1);
-
-
 
     }
 
@@ -144,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     granted = true;
                     LocationService.start(this.getApplicationContext());
-                    new CalendarListTask().execute();
+
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -157,7 +159,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onStart();
         if(granted) {
             LocationService.start(this.getApplicationContext());
-
         }
         showProgress();
     }
@@ -222,6 +223,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     startActivity(calIntent);
                 }
                 hideProgress();
+            } else if(action.equals(SettingActivity.ACTION_SETTING_CHANGED)) {
+                accountTv.setText(pref.getString(SettingActivity.KEY_CAL_ACCOUNT, ""));
+                timeTv.setText(pref.getString(SettingActivity.KEY_ALARM_TIME, "06:15"));
             }
         }
     };
@@ -237,93 +241,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             //LocationService.startPinWeatherEvent(this);
             CalEventReceiver.startAlarmEvent(this.getApplicationContext(), -1);
             showProgress();
+        } else if (v == settingBtn){
+            startActivity(new Intent(this, SettingActivity.class));
         }
     }
-
-
-    private class CalAdapter extends ArrayAdapter<String> {
-
-        public CalAdapter(Context context) {
-            super(context, 0);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null) {
-                convertView = View.inflate(getContext(), R.layout.cal_list_item, null);
-
-            }
-            TextView tv = (TextView) convertView.findViewById(R.id.account_name);
-            String name = getItem(position);
-            tv.setText(name);
-            return convertView;
-        }
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null) {
-                convertView = View.inflate(getContext(), R.layout.cal_list_item, null);
-
-            }
-            TextView tv = (TextView) convertView.findViewById(R.id.account_name);
-            String name = getItem(position);
-            tv.setText(name);
-            return convertView;
-        }
-    };
-    private class CalendarListTask extends AsyncTask<Void, Void, String[]> {
-        @Override
-        protected String[] doInBackground(Void... params) {
-            ArrayList<String> results = new ArrayList<>();
-            Cursor cur = null;
-            try {
-
-                ContentResolver cr = getContentResolver();
-                Uri uri = CalendarContract.Calendars.CONTENT_URI;
-                cur = cr.query(uri, null, null, null, null);
-                while(cur.moveToNext()) {
-                    String calAccount = cur.getString(cur.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME));
-                    results.add(calAccount);
-                }
-
-            } catch (SecurityException e) {
-                LzLog.e(TAG, e.toString(), e);
-            } catch (Exception e) {
-                LzLog.e(TAG, e.toString(), e);
-            } finally {
-                if(cur != null) {
-                    cur.close();
-                }
-            }
-            String[] re = new String[results.size()];
-            return results.toArray(re);
-        }
-
-        @Override
-        protected void onPostExecute(String[] results) {
-            calAdapter.clear();
-            calAdapter.addAll(results);
-            calAdapter.notifyDataSetChanged();
-            calAccount = pref.getString("calAccount", "");
-            for(int i=0;i<results.length;i++) {
-                if(calAccount.equals(results[i])){
-                    calSpinner.setSelection(i);
-                }
-            }
-        }
-    }
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = calAdapter.getItem(position);
-        calAccount = item;
-        pref.edit().putString("calAccount", calAccount).commit();
-        LzLog.d(TAG, "calAccount="+calAccount);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-
 
 }

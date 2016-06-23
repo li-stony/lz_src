@@ -111,4 +111,8 @@
     <string name="code_46">snow showers</string>
     <string name="code_47">isolated thundershowers</string>
     <string name="code_3200">not available</string>
+
+
+    <string name="setting_account">Account</string>
+    <string name="setting_time">Time</string>
 </resources>
