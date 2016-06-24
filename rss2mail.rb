@@ -245,7 +245,8 @@ class RssFetcher
 
         puts "end at #{Time.now.iso8601}"
         begin
-          cnt = 1440
+          # cnt = 1440 # too frequently
+          cnt = 4320
           while @running && (cnt > 0)
             sleep(5)
             cnt = cnt - 1
