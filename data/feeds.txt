@@ -1,7 +1,7 @@
 # livesino
 http://livesino.net/feed
 # android develop
-#http://feeds.feedburner.com/blogspot/hsDu
+http://feeds.feedburner.com/blogspot/hsDu
 # qiu shi bai ke
 http://feed.qiushibaike.com/rss
 # 一个散户的自我修养
@@ -32,3 +32,7 @@ http://www.matrix67.com/blog/feed
 http://feeds.feedburner.com/Linux_Story
 # 技术小黑屋
 http://droidyue.com/atom.xml
+# windows blog
+# https://blogs.windows.com/feed/
+# google blog
+http://feeds.feedburner.com/blogspot/MKuf
