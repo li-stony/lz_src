@@ -4,6 +4,9 @@ namespace Lz.PowerShell {
     public class MkLink {
         [DllImport("kernel32.dll")]
         public static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, int dwFlags);
+
+        [DllImport("kernel32.dll")]
+        public static extern int GetLastError();
     }
 }
 "@
@@ -28,12 +31,19 @@ function New-Link {
         return $false
     }
         
-    $linkPath = [System.IO.Path]::GetFullPath($Link)
-    $targetPath = [System.IO.Path]::GetFullPath($Target)
+    $linkPath = (Get-Location).Path + "\$Link"
+    $targetPath = (Get-Location).Path + "\$Target"
+    Write-Host "$linkPath <--> $targetPath"
     $result = [Lz.PowerShell.MkLink]::CreateSymbolicLink($linkPath.Path, $targetPath.Path, $flag)
+    if($result -ne $true) {
+        $err = [Lz.PowerShell.MkLink]::GetLastError()
+        Write-Host "Last Error $err"
+    }
     return $result
 
 
     
 }
+# useless now.
+# use New-Item -ItemType Symbolik instead
 Export-ModuleMember -Function New-Link
