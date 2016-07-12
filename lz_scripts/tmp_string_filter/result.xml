@@ -1,0 +1,543 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+
+    <!--<string name="app_name">Zapya</string>-->
+    <!-- start up activiry -->
+    <!-- common -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_notice">Notice</string>
+    <string name="common_accept">Accept</string>
+    <string name="common_reject">Reject</string>
+    <string name="dm_shake_warning">Shake your phone!</string>
+    <string name="dm_msg_drop_failed">Please drop the icon to the friend area to share</string>
+    <string name="menu_preview">Preview</string>
+    <string name="menu_play_online">Play</string>
+    <string name="menu_import">Import</string>
+    <string name="menu_open">Open</string>
+    <string name="menu_play">Play</string>
+    <string name="menu_listen">Listen</string>
+    <string name="menu_install">Install</string>
+    <string name="menu_view">View</string>
+    <string name="menu_send">Send</string>
+    <string name="menu_property">More</string>
+    <string name="menu_hide">Hide</string>
+    <string name="menu_show_hide">Recovery</string>
+    <string name="menu_backup">Backup</string>
+
+    <string name="menu_delete">Delete</string>
+    <string name="menu_rename">Rename</string>
+    <string name="menu_uninstall">Uninstall</string>
+    <string name="menu_pause">Pause</string>
+    <string name="menu_resume">Resume</string>
+    <string name="menu_retry">Retry</string>
+    <string name="menu_cancel">Cancel</string>
+    <string name="menu_update">Upgrade</string>
+    <string name="menu_3g">Mobile Data Download</string>
+    <string name="menu_guide">Quick User Guide</string>
+    <string name="menu_selfseed">Create Seed</string>
+    <string name="menu_bluetooth">Send by Bluetooth</string>
+    <string name="item_long_click_delete_log">Delete</string>
+
+    <!-- zapya private folder's name -->
+    <string name="dm_zapya_app_name">App</string>
+    <string name="dm_zapya_backup_name">Backup</string>
+    <string name="dm_zapya_misc_name">Others</string>
+    <string name="dm_zapya_music_name">Music</string>
+    <string name="dm_zapya_photo_name">Photo</string>
+    <string name="dm_zapya_video_name">Video</string>
+    <string name="dm_zapya_folder_name">Folder</string>
+    <string name="dm_zapya_parent_folder">Parent Folder</string>
+    <string name="dm_paitpad_doodle_name">Doodle</string>
+    <string name="dm_no_file_prompt_app">Not finding related apps yet</string>
+    <string name="dm_no_file_prompt_gallery">Not finding related images yet</string>
+    <string name="dm_no_file_prompt_audio">Not finding related audios yet</string>
+    <string name="dm_no_file_prompt_folder">Not finding related files yet</string>
+    <string name="dm_no_file_prompt_video">Not finding related videos yet</string>
+
+    <string name="dm_tab_title_center">Goodies</string>
+    <string name="dm_tab_title_apps">App</string>
+    <string name="dm_tab_title_camera">Camera</string>
+    <string name="dm_tab_title_photos">Photo</string>
+    <string name="dm_tab_title_movies">Video</string>
+    <string name="dm_tab_title_contact">Contacts</string>
+    <string name="dm_tab_title_music">Audio</string>
+    <string name="dm_tab_title_folder">Document</string>
+    <string name="dm_tab_title_sdcard">Storage</string>
+    <string name="dm_tab_title_zapya">Inbox</string>
+    <string name="dm_progress_loading">Loading...</string>
+    <string name="dm_input_panel_title_photos">Snap</string>
+    <string name="dm_input_panel_tab_title_movies">Video Stream</string>
+    <string name="dm_input_panel_title_music">Audio Stream</string>
+    <!-- main activity -->
+    <string name="dm_main_quit">Press one more time to exit Zapya</string>
+
+    <!-- group select -->
+    <string name="group_select_first_link_success">Okay</string>
+    <string name="group_select_friends_title">Connectable Friends</string>
+    <string name="group_select_creating">Creating Group</string>
+    <string name="group_select_linking">Connecting...</string>
+    <string name="group_select_canceling">Cancel connecting...</string>
+    <string name="group_user_head_select_waiting">Waiting for others...</string>
+    <string name="group_select_create_succ_2">Scan QR Code with Zapya\n（Or QQ, WeChat）</string>
+    <string name="group_select_create_click">If your friend has no internet</string>
+    <string name="group_select_create_succ">Ask your friends to join %1$s</string>
+    <string name="group_select_create_fail">Failed to create group</string>
+    <string name="group_select_retry">Retry</string>
+    <string name="group_select_scan">Show QR Code</string>
+    <string name="group_select_link_fail">Failed to connect</string>
+    <string name="group_select_list_title">Tap to Join</string>
+    <string name="group_select_mini_timeout">Continue waiting?</string>
+    <string name="group_select_mini_create_fail">Failed to create group, trying again</string>
+    <string name="input_password_title">Enter password</string>
+    <string name="password_8_bytes">Enter eight-character password</string>
+    <string name="group_select_file_desc1">%1$d files，%2$s</string>
+    <string name="group_select_file_desc2">%1$d folders，send pending</string>
+    <string name="group_select_file_desc3">%1$d files，%2$d folders，%3$s，send pending</string>
+    <string name="leave_group_notic">Leave current group?</string>
+    <string name="toast_create_fail">Unable to create a group, please try again!</string>
+    <string name="toast_link_fail">Unable to connect, please try again later!</string>
+    <string name="toast_reject_join">The peer is busy, please try again later！</string>
+    <string name="toast_user_leaved">%1$s left the group</string>
+    <string name="toast_password_error">Password is incorrect！</string>
+    <!-- logs -->
+    <string name="logs_send_to">Sent to  %1$s</string>
+    <string name="logs_recv_from">Received from %1$s</string>
+    <string name="logs_status_pause">Pause</string>
+    <string name="logs_status_recv_fail">Failed to receive</string>
+    <string name="logs_status_send_fail">Failed to send</string>
+    <string name="logs_status_wait_user">Exit from group</string>
+    <string name="logs_status_wait_network">Network unavailable</string>
+    <string name="logs_status_wait_wifi">WiFi unavailable</string>
+    <string name="logs_status_no_space">No storage space</string>
+    <string name="logs_status_no_sd">No SD card</string>
+    <string name="logs_status_imported">Imported</string>
+    <string name="logs_cancel_task_sure">Cancel %1$s \nApply?</string>
+
+    <string name="logs_delete_check_all">Select All</string>
+    <string name="logs_delete_uncheck_all">Deselect All</string>
+    <string name="logs_delete_text">Delete</string>
+    <string name="logs_delete_title">Delete record</string>
+    <string name="logs_deleting">Deleting</string>
+    <string name="logs_deletelog_tip">Do you want to delete selected logs?</string>
+    <string name="long_deletelog_tip2">This operation does delete files, please go to Inbox to delete the files.</string>
+    <string name="logs_show_next_times_tip">Don\'t show next time</string>
+    <string name="logs_deletemsg_tip">Delete messages?</string>
+    <string name="logs_message_menu_detail">View</string>
+    <string name="logs_message_menu_download">Download</string>
+    <string name="logs_no_transfer_new">No histoy found</string>
+    <string name="logs_no_transfer_notice">All shared files will be recorded here</string>
+    <string name="logs_kuaiya_market">Zapya</string>
+    <string name="logs_kuaina_market">Kuaina</string>
+    <string name="logs_filter_all">All Transfers</string>
+    <string name="logs_filter_unfinish">Unfinished</string>
+    <string name="logs_filter_uninstall">Installables</string>
+
+    <!-- dialog -->
+    <string name="dm_album">Album</string>
+    <string name="dm_camera">Camera</string>
+    <string name="set_title">Settings</string>
+    <!-- set -->
+
+    <string name="dm_enable_store">Default Storage</string>
+    <string name="dm_enable_store_smmary">External</string>
+    <string name="dm_storage_sdcard">Internal</string>
+    <string name="dm_storage_ext_card">External</string>
+    <string name="menu_multi">Select</string>
+    <string name="dm_set_ssid_title">Use Your Nickname as Wifi Hotspot Name</string>
+    <string name="dm_set_ssid_summary">Wifi Hotspot name to connect your friends\n</string>
+    <string name="dm_set_sys_msg">Message box</string>
+
+    <!-- Resource start -->
+    <string name="dm_toast_emptyname">File name cannot be blank</string>
+    <string name="dm_toast_emptyusername">Cannot be empty</string>
+    <string name="dm_toast_illegalname">File name cannot contain the character</string>
+    <string name="dm_toast_fileexist">File already exists! Type another name.</string>
+    <string name="dm_toast_rename_done">The file is renamed!</string>
+    <string name="dm_processing_delete">Deleting...</string>
+    <string name="dm_multi_delete_done">Delete Done</string>
+    <string name="dm_multi_delete_none">No file selected</string>
+    <string name="dm_data_delete_non_exists">File does not exist!</string>
+    <string name="dm_data_delete_success">%1$s is deleted successfully!</string>
+    <string name="dm_data_delete_failed">%1$s is deleted failed!</string>
+    <string name="resource_group_select">Select</string>
+    <string name="resource_group_unselect">Deselect</string>
+    <string name="dm_data_backup_success">%1$s is backed up successfully!</string>
+    <string name="dm_processing_backup">Backing up...</string>
+    <string name="msg_cannot_find_app_to_open_file">Cannot find app to open this file</string>
+    <string name="msg_no_privilege_to_open_file">Cannot open this app!</string>
+    <string name="dm_dialog_ok">OK</string>
+    <string name="dm_dialog_cancel">Cancel</string>
+    <string name="dm_dialog_input">Please input a new name</string>
+    <string name="dm_dialog_delete">Delete</string>
+    <string name="dm_dialog_delete_confirm">Are you sure to delete?</string>
+    <string name="dm_dialog_property">Properties</string>
+    <string name="dm_dialog_name">Title:</string>
+    <string name="dm_dialog_size">Size:</string>
+    <string name="dm_dialog_type">Type:</string>
+    <string name="dm_dialog_location">Location:</string>
+    <string name="dm_dialog_include">Contains:</string>
+    <string name="dm_dialog_lastdate">Modified On:</string>
+    <string name="dm_dialog_sender">From:</string>
+    <string name="dm_dialog_reciever">To:</string>
+    <string name="dm_dialog_transdate">Transfer on:</string>
+    <string name="dm_dialog_transstatus">Status:</string>
+    <string name="dm_dialog_totalsize">Total:</string>
+    <string name="dm_dialog_takes">Takes:</string>
+    <string name="dm_dialog_transize">Current:</string>
+    <string name="dm_dialog_version">Version:</string>
+    <string name="dm_dialog_version_code">Version Code:</string>
+    <string name="dm_dialog_packagename">Package Name:</string>
+    <string name="dm_dialog_include_detail">%1$d folders and %2$d files</string>
+    <string name="dm_dialog_takes_format_1">%1$d hours %2$d minutes %3$d seconds</string>
+    <string name="dm_dialog_takes_format_2">%1$d minutes %2$d seconds</string>
+    <string name="dm_dialog_takes_format_3">%1$d seconds</string>
+    <string name="dm_dialog_calculating">Calculating...</string>
+    <string name="dm_dialog_type_app">Application</string>
+    <string name="dm_dialog_type_video">Video</string>
+    <string name="dm_dialog_type_audio">Audio</string>
+    <string name="dm_dialog_type_image">Image</string>
+    <string name="dm_dialog_type_file">File</string>
+    <string name="dm_dialog_type_folder">Folder</string>
+    <string name="dm_dialog_file_unknow">Unknown</string>
+    <string name="dm_history_status_wait_get">Waiting peer</string>
+    <string name="dm_history_status_wait_user">Disconnected</string>
+    <string name="dm_history_status_wait_network">Network unavailable</string>
+    <string name="dm_history_status_pause">Pause</string>
+    <string name="dm_history_status_wait">Waiting</string>
+    <string name="dm_history_status_recv_fail">Failed</string>
+    <string name="dm_history_status_send_fail">Failed</string>
+    <string name="dm_history_status_succ">Done</string>
+    <string name="dm_history_status_sending">Sending</string>
+    <string name="dm_history_status_receiving">Receiving</string>
+    <string name="file_apk">Apps</string>
+    <string name="file_doc">Document</string>
+    <string name="file_ebook">eBook</string>
+    <string name="file_zip">ZIP File</string>
+    <string name="file_zapya_video">OmniVideo</string>
+    <string name="kuaiya_app">Promoted Apps</string>
+    <string name="internal_storage">Device Storage</string>
+    <string name="sdcard">SD Card</string>
+    <string name="external_storage">External Storage</string>
+    <string name="date_format">yyyy-MM-dd</string>
+    <string name="local_app">My Apps</string>
+    <string name="local_game">Local Games</string>
+    <string name="mtxx">MTXX</string>
+    <string name="moman">Moman Camera</string>
+    <string name="myxj">MYXJ</string>
+    <string name="wonder">PhotoWonder</string>
+    <string name="poco">POCO Camera</string>
+    <string name="video_header">More full length videos</string>
+
+    <!-- Resource end -->
+    <string name="click_head_transfer">Click avatar to send</string>
+
+    <!-- clear_cashe -->
+    <!-- setting  start -->
+    <string name="set_password_title">Set Password</string>
+    <string name="set_password_hint">Enter a password</string>
+    <string name="set_password_text">Set 8-character alphanumeric password</string>
+    <string name="show_pass">Show Password</string>
+    <string name="set_sure">Apply</string>
+    <string name="set_cancle">Cancel</string>
+    <string name="password_notify">Password may not be blank</string>
+    <string name="password_size">Invalid number of password characters</string>
+    <string name="password_status">Password saved</string>
+    <string name="password_zn">Cannot include non-English characters</string>
+    <string name="password_invalid_format">Format of password is invalid</string>
+    <!-- multi select -->
+    <string name="multi_transfer">Send</string>
+
+    <!-- user storage  start -->
+    <!-- user storage  end -->
+
+
+    <!-- start  Photo browser -->
+    <!-- end Photo browser -->
+
+    <string name="dm_plugin_game_max_user">Choose up to %1$d people</string>
+
+    <!-- start media player -->
+    <!-- end media player -->
+
+
+    <!-- drawer start -->
+    <string name="drawer_fap">Quick User Guide</string>
+    <string name="user_center_save_succeeded">successfully saved</string>
+    <string name="connect_iphone">Connect to Apple Device</string>
+    <string name="connect_pc">Connect to PC</string>
+    <string name="invite_friends">Install Zapya for Friends</string>
+    <!-- drawer end -->
+
+
+    <!-- contact us start -->
+    <string name="dm_msg_buzzed_you">just buzzed you</string>
+    <string name="dm_user_shake_self">I just buzzed you</string>
+    <string name="dm_msg_kicked_you_out">%1$s just asked you to make space for others</string>
+    <string name="dm_user_deleteuser">Kick out</string>
+    <string name="dm_user_shake">Buzz</string>
+    <string name="dm_game_invite">Game</string>
+    <string name="dm_msg_dialog_kick_out_client_user">Kick out will break connection with %s, do you want to continue?</string>
+    <string name="version_update_xml_file">http://download.dewmobile.net/z/KuaiYa20_daily_release.xml</string>
+    <string name="version_update_xml_file_google">http://download.dewmobile.net/update/KuaiYa_release_google.xml</string>
+    <string name="version_update_xml_file_mobogenie">http://download.dewmobile.net/update/Zapya_lite_mobogenie.xml</string>
+    <string name="version_update">Upgrade Zapya</string>
+
+    <string name="version_update_available_for_push_msg"> Zapya-New Version Available</string>
+    <string name="version_update_use_3g">Upgrade version will cost mobile data traffic, do you want to upgrade?</string>
+    <string name="version_update_upgrade">Upgrade</string>
+    <string name="version_update_zero_upgrade">Free Upgrade</string>
+    <string name="version_update_ignore">Ignore</string>
+    <string name="dm_history_date_format">yyyy-MM-dd</string>
+
+    <!-- contact us start -->
+
+    <!-- contact us end -->
+
+    <!-- hot start -->
+    <string name="dm_hot_dialog_tips">Mobile Data Tips</string>
+    <string name="dm_hot_dialog_tips_first">WARNING!</string>
+    <string name="dm_hot_dialog_tips_second">Fees will be charged if allowing download via mobile data.\nContinue?</string>
+    <string name="dm_hot_dialog_tips_3">You are trying to download via mobile data.\nOpen the "Allow download via mobile data" option in the "Settings - Network"</string>
+    <string name="dm_hot_dialog_tips_4">Fees will be charged if allowing download via mobile data.\nContinue?</string>
+    <string name="dm_hot_dialog_tips_5">Fees will be charged if allowing download via mobile data.\nContinue?</string>
+    <string name="dm_hot_dialog_ok">Allow</string>
+    <string name="dm_hot_dialog_no">Decline</string>
+
+    <!-- hot end -->
+
+
+    <!-- zapya message -->
+    <string name="bind_no_web">Network unavailable, please check network and try again</string>
+    <!-- zapya message end -->
+
+    <!-- guide end -->
+    <!--<string name="send_name">Zapya</string>-->
+
+    <!-- hide file -->
+
+    <string name="hide_success">Set the file as hidden</string>
+    <string name="hide_dlg_title">View in Settings-Show Hidden</string>
+    <string name="hide_dlg_msg">Manage selected file to be hidden in resource screens</string>
+
+    <!-- zapya game -->
+    <string name="dm_paper_throw_back">Toss</string>
+
+    <!-- zapya chat -->
+    <string name="chat_media_date_format">yyyy-MM-dd HH.mm.ss</string>
+    <string name="feed_res_time_day">days</string>
+    <string name="feed_res_time_hours">hours</string>
+    <string name="feed_res_time_minute">mins</string>
+    <string name="feed_res_time_seconds">secs</string>
+    <string name="feed_res_time_moment">Just</string>
+    <string name="feed_res_time_ago">ago</string>
+
+
+    <!-- tao phone begin -->
+    <!-- tao phone end -->
+
+    <string name="shake_text">hey，I just buzzed you :)</string>
+
+
+    <!-- silent install notify -->
+
+    <!-- sui  shen ting -->
+    <string name="unknown_artist">Unknown Artist</string>
+    <!-- search -->
+    <string name="dm_tab_title_search">File</string>
+    <string name="dm_search_input_hint">Search my files</string>
+    <string name="dm_search_first_loading">Searching for the first time, preparing ...</string>
+    <string name="dm_search_no_data">No result found</string>
+    <string name="dm_search_clear">Clear History</string>
+    <string name="dm_min_code_prompt">The app requires newer version of operating system</string>
+
+    <!-- Let's play games together -->
+
+    <!-- wifi direct -->
+
+    <!-- omnivideo -->
+    <string name="audio_head_artist">List by artists</string>
+    <string name="trans_bar_result_succ"><![CDATA[Done! {cnt} items / {size}{unit} / {sec}sec]]></string>
+    <string name="trans_bar_result_succ_2"><![CDATA[Done! {cnt} items / {size}{unit} / {min}min]]></string>
+    <string name="trans_bar_result_succ_3"><![CDATA[Done! {cnt} items / {size}{unit}]]></string>
+    <string name="trans_bar_result_fail"><![CDATA[Incomplete Transfer...]]></string>
+
+    <!-- 3 .0 -->
+    <string name="search_first_all_folder">My SD Card</string>
+    <string name="drag_prompt">Drag to avatar for sharing</string>
+    <string name="resource_group_select_blank">        </string>
+    <string name="resource_group_unselect_blank">                </string>
+    <!-- 3.1 -->
+    <string name="logs_filter_exchange">Replicate Logs</string>
+    <string name="exchange_phone_dialog_prompt">Notice</string>
+
+    <!-- disconnect_dialog -->
+    <string name="play_for_a_while_more">Play More?</string>
+    <string name="invite_join_game">Join Game</string>
+    <string name="tao_phone">Peek</string>
+    <string name="insist_disconnet">Exit</string>
+    <string name="has_leave_group">Peer as left. Want to disconnect?</string>
+
+    <!-- VsGameRecommendPanel -->
+
+    <!-- toast ProgressDialog AlertDialog message -->
+    <string name="toast_chat_findfile_failed">File not exist</string>
+    <string name="image_seletct_max">Select max of %1$d</string>
+
+    <string name="group_select_file_desc4">%1$d Contact(s) on waiting list</string>
+
+
+
+    <string name="user_center_change_photo">Edit profile picture</string>
+    <string name="user_center_name_limit_tip">At most %1$d characters</string>
+    <!-- 3.5 Resource Center -->
+
+
+    <!-- 3.6 -->
+    <string name="dm_self_profile_edit_info">Edit Profile</string>
+    <string name="dm_self_profile_nickname">Nickname:</string>
+    <string name="dm_self_profile_edit_nickname_tip">Your nickname</string>
+    <string name="dm_self_profile_edit_gender_tip">Gender:</string>
+
+    <string name="dm_file_invalidate">Invalid file!</string>
+
+
+
+
+
+
+    <!-- DO NOT TRANSLATE -->
+
+
+
+
+    <string name="open_gps">GPS has to be turned on to scan Wifi nearby</string>
+    <string name="notify_write_sys_setting">Android6.0 devices have to enable Write Settings permission for Zapya to Create Group</string>
+
+    <!-- connect other devices -->
+    <string name="connect_wp">Connect to Windows Device</string>
+    <string name="connect_others_title">Connect to Other Device</string>
+    <!-- Donald, please do not translate the belows -->
+    <string name="ok">Ok</string>
+    <string name="app_not_installed">App not installed</string>
+    <!-- Donald, please do not translate the above-->
+
+
+    <string name="check_perm_title">Zapya requires following privileges:</string>
+    <string name="check_perm_miui_wifi">Allow \"Enable WiFi\" setting</string>
+    <string name="check_perm_miui_loc">Allow \"Location\" setting</string>
+    <string name="check_perm_goto_setting">Please enable above services in the system settings.</string>
+
+
+    <string name="drawer_start_webshare">Launch Zapya WebShare</string>
+    <string name="mobile_data_banner_warn">Enabling mobile data may be abused by the connected devices, please disable it.</string>
+    <string name="mobile_data_warn_title">Disable mobile data</string>
+    <string name="mobile_data_alert">Enabling mobile data for connected devices may be abused.\nPlease disable mobile data under pull-down menu of notification.</string>
+    <string name="mobile_data_button_close">Or, disable it under system settings.</string>
+
+    <string name="miui_open_wifi">System notice of Zapya requesting WiFi privilege may show up. Please confirm to prevent failure in creating group</string>
+
+    <!-- 快牙兴趣推荐：一点资讯，万能影视 -->
+    <!-- InterestFragment -->
+    <!-- InterestUserView -->
+    <!-- InterestWebActivity -->
+
+    <!-- DO NOT TRANSLATE THE BELOW NOW -->
+    <string name="share_title">%1$s等%2$d个文件</string>
+    <!-- DO NOT TRANSLATE THE ABOVE NOW -->
+    <!--  -->
+    <string name="download_wifi_btn_text">Automatic Wi-Fi Download</string>
+    <string name="download_btn_text">Direct Download</string>
+
+    <!-- 3.9.1 zapya coin start-->
+
+
+    <!-- 3.9.1 zapya coin end-->
+
+    <!--  4.0 start -->
+
+    <string name="zapya4_history">Transfer Records</string>
+
+
+    <string name="image_title">Sort by time</string>
+    <string name="audio_title">Sort by letters</string>
+
+
+
+
+    <!-- z-link -->
+    <string name="z4_probe_other">Join Group</string>
+    <string name="z4_start_group">Create Group</string>
+    <string name="z4_scan_qr">Scan QR</string>
+    <string name="z4_my_qr">My QR</string>
+    <string name="z4_scan_me_pls">Ask your friend to scan or join %1$s in Wifi Setting</string>
+    <string name="z4_link_prompt_pop">Can\'t find your friend? One of you taps Create Group</string>
+    <string name="z4_ios_scan_qr">For Apple devices\"Scan QR\"Or WiFi Setting</string>
+    <string name="z4_tab_radar">Radar</string>
+    <string name="z4_tab_qr">QR Code</string>
+
+
+    <string name="zapya4_search_used">Used:</string>
+    <string name="zapya4_search_total">Total:</string>
+
+    <string name="zapya_top_badge_login">Login to earn Z-Coins</string>
+
+    <string name="zapya4_scan">Scan QR</string>
+
+
+    <!-- 3.9.1 zapya coin end -->
+    <!-- 3.9.3 -->
+    <string name="easemod_user_sg_edit_tips">Signature Max 20 Char. </string>
+    <!-- 推荐的轮换推荐语 -->
+    <!-- 3.9.3 end -->
+
+
+
+
+
+
+    <string name="easemod_user_sg_edit_titlenew">Signature:</string>
+
+
+
+    <string name="switch_tab_fail">Not possible in connected state. Please disconnect.</string>
+
+
+
+
+    <string name="dm_tab_title_history">Receive</string>
+    <string name="dm_hots_download_tips">Selected task is now added to the download queue. Once there is a Wi-Fi connection it will automatically start downloading.</string>
+    <string name="logs_delete_normal">Clean</string>
+    <string name="logs_add_to_transfer">Added to the transfer queue. View the progress in the history tab.</string>
+    <string name="logs_add_to_transfer_upgrade">Currently transferring, you can upgrade while downloading.</string>
+    <string name="logs_add_to_transfer_get">Currently transferring, you can install it in history tab.</string>
+
+    <string name="dm_connect_wifi_passwd">Password:%1$s</string>
+    <string name="create_wifi_direct_group">Create WiFi Direct Group</string>
+
+    <string name="update_version_name">Discover the new version%1$s</string>
+    <!-- 海外多语言 -->
+
+    <string name="dm_update_click_text">Upgrade</string>
+
+    <!-- 海外关于我们 -->
+
+    <string name="menu_more_op">All</string>
+
+
+    <string formatted="false" name="dm_update_fromfriend_desc">Friend %1$s,%2$s\n and others %4$s are all using Zapya. %3$s</string>
+    <string  name="dm_update_fromfriend_action">Take a look</string>
+    <string  name="dm_update_fromfriend_title">New Message Received</string>
+
+
+
+
+
+
+
+
+
+
+
+
+</resources>
