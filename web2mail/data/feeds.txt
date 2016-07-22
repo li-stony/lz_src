@@ -1,4 +1,4 @@
-# livesino
+﻿# livesino
 http://livesino.net/feed
 # android develop
 http://feeds.feedburner.com/blogspot/hsDu
@@ -15,7 +15,7 @@ http://www.williamlong.info/rss.xml
 # http://www.geekonomics10000.com/feed
 # 战隼的学习探索
 # http://feed.read.org.cn/
-#http://feeds.feedburner.com/programthink
+http://feeds.feedburner.com/programthink
 http://blog.sina.com.cn/rss/1783658901.xml
 # 云风的 BLOG
 http://blog.codingnow.com/atom.xml
