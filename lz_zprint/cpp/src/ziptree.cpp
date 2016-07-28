@@ -43,7 +43,7 @@ int ZipTree::parse()
 	uint64_t hd_start = eocd->cd_start;
 	uint64_t hd_num = eocd->cd_total;
 	delete eocd;
-	std::cout << "hd_num:"<<hd_num<<"hd_start:" << hd_start << std::endl;
+	std::cout << "hd_num:"<<hd_num<<" hd_start:" << hd_start << std::endl;
 	for (int i = 0; i < hd_num; i++) {
 		ZipCdHeader* cd_header = find_cd_header(fp);
 		if (cd_header == NULL) {
