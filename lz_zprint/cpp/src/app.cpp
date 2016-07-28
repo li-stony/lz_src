@@ -43,9 +43,9 @@ int main(int argc, char* argv[])
 	else {
 		ZipPrint print = ZipPrint(tree.get_root());
 		print.print(level);
-		SetConsoleOutputCP(oldcodepage);
+		
 	}
-	
+	SetConsoleOutputCP(oldcodepage);
 	
 	return ret;
 }
