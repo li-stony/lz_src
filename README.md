@@ -6,4 +6,4 @@ I would update this file every time I add project or release a milestone. So I c
 I think. 
 
 **20160728**  
->> Add *lzprint*, Whith is a command to statistics every child folder/file size in the zip file.
+> Add *lzprint*, Whith is a command to statistics every child folder/file size in the zip file.
