@@ -51,7 +51,7 @@ int ZipTree::parse()
 			fclose(fp);
 			return __LINE__;
 		}
-		ZipNode* item = new ZipNode();
+		std::shared_ptr<ZipNode> item ( new ZipNode());
 		std::string name;
 		name.assign((char*)cd_header->name, cd_header->name_len);
 		item->set_name(name);
@@ -59,7 +59,7 @@ int ZipTree::parse()
 		// std::cout <<"parse done:" << item->get_name().c_str() << std::endl;
 		
 		// add
-		bool ok =root->add_child(std::shared_ptr<ZipNode>(item));
+		bool ok =root->add_child(item);
 		if (!ok) {
 			std::cout << "add child error. " << name.c_str() << std::endl;
 			delete cd_header;
