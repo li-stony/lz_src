@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <memory>
-#include "zipitem.h"
+#include "zipnode.h"
 
 class ZipTree {
 public:
@@ -11,9 +11,9 @@ public:
 
 	int parse();
 
-	std::shared_ptr<ZipItem> get_root();
+	std::shared_ptr<ZipNode> get_root();
 private:
-	std::shared_ptr<ZipItem> root;
+	std::shared_ptr<ZipNode> root;
 	int level;
 	std::string zip;
 };

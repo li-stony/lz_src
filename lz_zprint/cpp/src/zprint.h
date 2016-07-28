@@ -1,11 +1,11 @@
-#include "zipitem.h"
+#include "zipnode.h"
 
 class ZipPrint {
 public:
-	ZipPrint(std::shared_ptr<ZipItem> root);
+	ZipPrint(std::shared_ptr<ZipNode> root);
 	void print(int level);
 private:
-	void print(ZipItem* item, int depth, int level);
+	void print(ZipNode* item, int depth, int level);
 private:
-	std::shared_ptr<ZipItem> root;
+	std::shared_ptr<ZipNode> root;
 };

@@ -150,7 +150,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\zipitem.h" />
+    <ClInclude Include="..\..\..\src\zipnode.h" />
     <ClInclude Include="..\..\..\src\ziptree.h" />
     <ClInclude Include="..\..\..\src\ziputil.h" />
     <ClInclude Include="..\..\..\src\zprint.h" />
@@ -159,7 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\app.cpp" />
-    <ClCompile Include="..\..\..\src\zipitem.cpp" />
+    <ClCompile Include="..\..\..\src\zipnode.cpp" />
     <ClCompile Include="..\..\..\src\ziptree.cpp" />
     <ClCompile Include="..\..\..\src\ziputil.cpp" />
     <ClCompile Include="..\..\..\src\zprint.cpp" />

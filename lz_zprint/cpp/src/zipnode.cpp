@@ -1,11 +1,11 @@
-#include "zipitem.h"
+#include "zipnode.h"
 
-ZipItem::ZipItem()
+ZipNode::ZipNode()
 {
 
 }
 
-void ZipItem::add_size(long s, long cs)
+void ZipNode::add_size(long s, long cs)
 {
 	this->size += s;
 	this->csize += cs;
@@ -13,7 +13,7 @@ void ZipItem::add_size(long s, long cs)
 		parent->add_size(s, cs);
 	}
 }
-bool ZipItem::add_child(std::shared_ptr<ZipItem> child)
+bool ZipNode::add_child(std::shared_ptr<ZipNode> child)
 {
 	std::string cname = child->get_name();
 	std::size_t index = cname.find(this->name);
@@ -30,16 +30,16 @@ bool ZipItem::add_child(std::shared_ptr<ZipItem> child)
 			else {
 				// it'a a grandchild
 				std::string pname = cname.substr(0, next_slash);
-				std::shared_ptr<ZipItem> c_parent(nullptr);
+				std::shared_ptr<ZipNode> c_parent(nullptr);
 				for (int i = 0; i < this->children.size(); i++) {
 					if (this->children[i]->get_name() == pname) {
 						c_parent = this->children[i];
 					}
 				}
 				if (c_parent == nullptr) {
-					ZipItem* p = new ZipItem();
+					ZipNode* p = new ZipNode();
 					p->name = pname;
-					c_parent = std::shared_ptr<ZipItem>(p);
+					c_parent = std::shared_ptr<ZipNode>(p);
 					c_parent->set_parent(this);
 					this->children.push_back(c_parent);
 				}
@@ -58,32 +58,46 @@ bool ZipItem::add_child(std::shared_ptr<ZipItem> child)
 	
 }
 
-std::string ZipItem::get_name()
+std::string ZipNode::get_name()
 {
 	return this->name;
 }
-uint64_t ZipItem::get_size()
+uint64_t ZipNode::get_size()
 {
 	return this->size;
 }
-uint64_t ZipItem::get_csize()
+uint64_t ZipNode::get_csize()
 {
 	return this->csize;
 }
 
-void ZipItem::set_name(std::string n) 
+void ZipNode::set_name(std::string n) 
 {
 	if (n[0] != '/') {
 		n.insert(0, "/");
 	}
+	if (n[n.length() - 1] == '/') {
+		n.erase(n.length() - 1);
+	}
 	this->name = n;
 }
 
-void ZipItem::set_parent(ZipItem* p)
+void ZipNode::set_parent(ZipNode* p)
 {
 	parent = p;
 }
-std::vector<std::shared_ptr<ZipItem>> ZipItem::get_children()
+std::vector<std::shared_ptr<ZipNode>> ZipNode::get_children()
 {
 	return children;
+}
+int ZipNode::get_leaf_num() 
+{
+	if (children.size() == 0) {
+		return 1;
+	}
+	int num = 0;
+	for (int i = 0; i < children.size(); i++) {
+		num = num + children[i]->get_leaf_num();
+	}
+	return num;
 }

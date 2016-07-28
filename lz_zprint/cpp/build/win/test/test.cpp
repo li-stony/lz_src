@@ -16,11 +16,11 @@ int main()
 	files.push_back("b");
 
 	// test tree struct
-	std::shared_ptr<ZipItem> root(new ZipItem);
+	std::shared_ptr<ZipNode> root(new ZipNode);
 	root->set_name("/");
 	root->set_parent(nullptr);
 	for (int i = 0; i < files.size(); i++) {
-		std::shared_ptr<ZipItem> item(new ZipItem());
+		std::shared_ptr<ZipNode> item(new ZipNode());
 		item->set_name(files[i]);
 		root->add_child(item);
 		item->add_size(i, 1);
