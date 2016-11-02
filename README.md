@@ -1,3 +1,7 @@
+
+This project not used. That I didn't delete it is some codes runs on some virtual machine using it.
+***
+
 # LZ_SRC
 I have move all my source codes under one repository. Because the repositories grow quickly. I can't suffer that.  
 
