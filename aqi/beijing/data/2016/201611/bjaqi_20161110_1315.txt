@@ -1,0 +1,70 @@
+﻿{
+    "Table":  [
+                  {
+                      "Date_Time":  "2016-11-10 13:00:00",
+                      "station":  "北京市",
+                      "Pollutant":  "CO",
+                      "Value":  "2",
+                      "IAQI":  "17",
+                      "QLevel":  "一级",
+                      "Quality":  "优",
+                      "PriPollutant":  "PM2.5",
+                      "QColor":  "#00e400"
+                  },
+                  {
+                      "Date_Time":  "2016-11-10 13:00:00",
+                      "station":  "北京市",
+                      "Pollutant":  "NO2",
+                      "Value":  "64",
+                      "IAQI":  "33",
+                      "QLevel":  "一级",
+                      "Quality":  "优",
+                      "PriPollutant":  "PM2.5",
+                      "QColor":  "#00e400"
+                  },
+                  {
+                      "Date_Time":  "2016-11-10 13:00:00",
+                      "station":  "北京市",
+                      "Pollutant":  "O3",
+                      "Value":  "10",
+                      "IAQI":  "4",
+                      "QLevel":  "一级",
+                      "Quality":  "优",
+                      "PriPollutant":  "PM2.5",
+                      "QColor":  "#00e400"
+                  },
+                  {
+                      "Date_Time":  "2016-11-10 13:00:00",
+                      "station":  "北京市",
+                      "Pollutant":  "PM10",
+                      "Value":  "204",
+                      "IAQI":  "127",
+                      "QLevel":  "三级",
+                      "Quality":  "轻度污染",
+                      "PriPollutant":  "PM2.5",
+                      "QColor":  "#ff7e00"
+                  },
+                  {
+                      "Date_Time":  "2016-11-10 13:00:00",
+                      "station":  "北京市",
+                      "Pollutant":  "PM2.5",
+                      "Value":  "186",
+                      "IAQI":  "236",
+                      "QLevel":  "五级",
+                      "Quality":  "重度污染",
+                      "PriPollutant":  "PM2.5",
+                      "QColor":  "#99004c"
+                  },
+                  {
+                      "Date_Time":  "2016-11-10 13:00:00",
+                      "station":  "北京市",
+                      "Pollutant":  "SO2",
+                      "Value":  "11",
+                      "IAQI":  "4",
+                      "QLevel":  "一级",
+                      "Quality":  "优",
+                      "PriPollutant":  "PM2.5",
+                      "QColor":  "#00e400"
+                  }
+              ]
+}

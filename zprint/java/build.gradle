@@ -1,0 +1,25 @@
+group 'lz'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+jar {
+    baseName "coord"
+    //includes ['src/main/META_INF']
+    manifest {
+        attributes 'Main-Class': 'lz.coord.CoordTrans'
+    }
+}

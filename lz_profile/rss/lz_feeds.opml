@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+ <head>
+  <title>OPML exported from Outlook</title>
+  <dateCreated>Thu, 25 Aug 2016 17:50:29 +0800</dateCreated>
+  <dateModified>Thu, 25 Aug 2016 17:50:29 +0800</dateModified>
+ </head>
+ <body>
+  <outline text="月光博客" type="rss" xmlUrl="http://feed.williamlong.info"/>
+  <outline text="三界唯心，万法唯识" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1071924215.xml"/>
+  <outline text="技术小黑屋" type="rss" xmlUrl="http://droidyue.com/atom.xml"/>
+  <outline text="Matrix67: The Aha Moments" type="rss"
+  xmlUrl="http://www.matrix67.com/blog/feed"/>
+  <outline text="云风的 BLOG" type="rss"
+  xmlUrl="http://blog.codingnow.com/atom.xml"/>
+  <outline text="邓侃的博客" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1188078483.xml"/>
+  <outline text="gfwlist 更新记录" type="rss"
+  xmlUrl="http://feeds.feedburner.com/gfwlist"/>
+  <outline text="LiveSino 中文版" type="rss" xmlUrl="http://livesino.net/feed"/>
+  <outline text="海宁的博客" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1783658901.xml"/>
+  <outline text="褪墨・时间管理，个人提升，生活健康与习惯" type="rss"
+  xmlUrl="http://feed.mifengtd.cn"/>
+  <outline text="酷 壳 – CoolShell.cn" type="rss"
+  xmlUrl="http://coolshell.cn/feed"/>
+  <outline text="编程随想的博客" type="rss"
+  xmlUrl="http://feeds.feedburner.com/programthink"/>
+  <outline text="井底望天" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1376817405.xml"/>
+  <outline text="学而时嘻之" type="rss" xmlUrl="http://www.geekonomics10000.com/feed"/>
+  <outline text="四火的唠叨" type="rss" xmlUrl="http://www.raychase.net/feed"/>
+  <outline text="糗事百科" type="rss" xmlUrl="http://feed.qiushibaike.com/rss"/>
+  <outline text="邓元杰" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1660297672.xml"/>
+  <outline text="Windows PowerShell Blog" type="rss"
+  xmlUrl="https://blogs.msdn.microsoft.com/powershell/feed/"/>
+  <outline text="阮一峰的网络日志" type="rss"
+  xmlUrl="http://www.ruanyifeng.com/blog/atom.xml"/>
+  <outline text="欧阳疯博客" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1099184322.xml"/>
+  <outline text="Android Developers Blog" type="rss"
+  xmlUrl="http://feeds.feedburner.com/blogspot/hsDu"/>
+  <outline text="战隼的学习探索" type="rss" xmlUrl="http://feed.read.org.cn"/>
+  <outline text="一个散户的自我修养" type="rss"
+  xmlUrl="http://blog.sina.com.cn/rss/1576966507.xml"/>
+  <outline text="Linux Story" type="rss"
+  xmlUrl="http://feeds.feedburner.com/Linux_Story"/>
+ </body>
+</opml>
