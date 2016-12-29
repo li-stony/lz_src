@@ -62,7 +62,7 @@ class MailClient
       @client = nil
     end
   end
-  
+
   def post_mail(feedName, updated, title, body)
     begin
       t = Time.at(updated)
@@ -76,17 +76,17 @@ class MailClient
       end
     rescue Exception => err
       puts err
-      
+
     end
-    
+
   end
-  
+
 end
 
 class HistoryMgr
-  
+
   def initialize()
-    @dict = Hash.new  
+    @dict = Hash.new
   end
 
   def update(url, date)
@@ -100,17 +100,17 @@ class HistoryMgr
     end
     return value
   end
-  
+
   def save()
     p = data_path() + 'history.txt';
     f = File.open(p, 'w')
     @dict.each_key do |key|
       f.write("#{key}\t|\t#{@dict[key]}\n")
     end
-                       
+
     f.close()
   end
-  
+
   def load()
     puts 'load history ...'
     p = data_path() + 'history.txt';
@@ -130,7 +130,7 @@ end
 
 class RssFetcher
   def initialize()
-    
+
     @running = true
     @hmgr = HistoryMgr.new
     @feeds = Array.new
@@ -143,10 +143,10 @@ class RssFetcher
     @hmgr.load()
     while @running
       puts "begin at #{Time.now.iso8601}"
-      
-      
+
+
       ok = @mail.start()
-      
+
       if ok
         puts "smtp connected. checking feeds ..."
         load_feeds()
@@ -189,7 +189,7 @@ class RssFetcher
                   puts "[#{item.title}] not updated"
                   next
                 end
-                
+
                 puts "post item: [#{item.title}]"
                 body = nil
                 if item.content_encoded == nil
@@ -219,7 +219,7 @@ class RssFetcher
                 items.insert(0, item)
               end
               items.each do |item|
-                
+
                 title = item.title.content
                 body = item.content.content
                 itemUpdated = item.updated.content.to_i
@@ -234,12 +234,12 @@ class RssFetcher
             else
               puts "invalid format [#{url}]"
             end
-            
+
           rescue Exception => e
             puts e.message
             puts e.backtrace.inspect
           end
-          
+
         end
         @mail.stop()
 
@@ -254,7 +254,7 @@ class RssFetcher
         rescue
           next
         end
-        
+
       else
         puts "smtp not ok, wait ..."
         begin
@@ -267,12 +267,12 @@ class RssFetcher
           next
         end
       end
-      
-      
+
+
     end
     @hmgr.save()
     puts 'stop.'
-    
+
   end
   def stop()
     @running = false
@@ -282,9 +282,10 @@ class RssFetcher
       puts 'load feeds ... '
       @feeds.clear
       #url = "https://raw.githubusercontent.com/li-stony/zl_src/master/web2mail/data/feeds.txt"
-      url = "https://raw.githubusercontent.com/li-stony/web2mail/master/data/feeds.txt"
+      # url = "https://raw.githubusercontent.com/li-stony/lz_src/master/data/feeds.txt"
+      url = "https://raw.githubusercontent.com/li-stony/lz_src/master/web2mail/data/feeds.txt"
       uri = URI(url)
-      puts uri  
+      puts uri
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       req = Net::HTTP::Get.new(uri.request_uri)
@@ -303,7 +304,7 @@ class RssFetcher
       puts 'feeds not load from github'
       puts e
     end
-  end	
+  end
 end
 
 $proxy = nil
@@ -319,7 +320,7 @@ if __FILE__ == $0
       $proxy.stop()
     end
   end
-  STDOUT.sync = true 
+  STDOUT.sync = true
   $proxy = RssFetcher.new
   $proxy.start()
 end
