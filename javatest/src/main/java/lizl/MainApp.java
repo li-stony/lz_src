@@ -1,5 +1,6 @@
 package lizl;
 
+import lizl.bson.BsonTest;
 import lizl.common.CommonTest;
 
 /**
@@ -16,5 +17,7 @@ public class MainApp {
 
         // new
         new CommonTest().test();
+
+        new BsonTest().test();
     }
 }
