@@ -68,7 +68,7 @@ public class Rss2Mail extends UntypedActor {
 
     }
     private static void fetch(long _id, String rssUrl, long lastUpdate, RssConfigModel config, LzMailClient mail){
-        SimpleDateFormat sdf = new SimpleDateFormat();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Logger.info(sdf.format(new Date())+" checking: "+_id+" "+rssUrl);
 
         try {
@@ -95,7 +95,7 @@ public class Rss2Mail extends UntypedActor {
                     pubDate.setSeconds(59);
                 }
 
-                if( pubDate.getTime() > lastUpdate) {
+                if( pubDate.getTime() > (lastUpdate+100)) {
 
                     StringBuilder sb = new StringBuilder();
                     //sb.append("<h1>[").append(feed.getTitle()).append("]").append(item.getTitle()).append("</h1>\r\n");
