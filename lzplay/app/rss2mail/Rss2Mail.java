@@ -46,7 +46,9 @@ public class Rss2Mail extends UntypedActor {
     }
 
     private static void start() {
-        Logger.info("rss2mail start");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+        Date d = new Date();
+        Logger.info(sdf.format(d) + " rss2mail start ");
         // read db
         RssConfigModel config = RssConfigModel.findOne(1);
         Logger.info(config.toJson().toString());
@@ -61,11 +63,13 @@ public class Rss2Mail extends UntypedActor {
                 break;
             }
         }
-        Logger.info("rss2mail end");
+        d = new Date();
+        Logger.info(sdf.format(d) + " rss2mail end");
 
     }
     private static void fetch(long _id, String rssUrl, long lastUpdate, RssConfigModel config, LzMailClient mail){
-        Logger.info("checking: "+_id+" "+rssUrl);
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        Logger.info(sdf.format(new Date())+" checking: "+_id+" "+rssUrl);
 
         try {
             SyndFeed feed = new SyndFeedInput().build(new XmlReader(new URL(rssUrl)));
