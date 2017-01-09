@@ -14,7 +14,7 @@ public class CommonTest extends BaseTest {
         //d.setTime(System.currentTimeMillis());
         d.setHours(23);
         d.setMinutes(59);
-        SimpleDateFormat fmt1 = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+        SimpleDateFormat fmt1 = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
         System.out.println(fmt1.format(d));
 
         SimpleDateFormat fmt2 = new SimpleDateFormat("yyyy-MM-DD hh:mm");
