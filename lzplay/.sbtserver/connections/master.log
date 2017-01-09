@@ -1,0 +1,25 @@
+New log file opened at Sat Jan 07 01:58:10 CST 2017 by 17338@ThinkPad-T540p
+Taking next connection to: 35550
+New client attempting to connect on port: 57162-35550
+  Address = /127.0.1.1:35550
+This client on port 57162 has uuid 1ad21bfd-4508-4e7b-a120-4aa973555539 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-1ad21bfd-4508-4e7b-a120-4aa973555539
+Taking next connection to: 35550
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 35550
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 35550
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 35550
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 35550
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 17338@ThinkPad-T540p logs at Sat Jan 07 02:13:11 CST 2017, goodbye.
