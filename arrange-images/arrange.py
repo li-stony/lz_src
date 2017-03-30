@@ -49,6 +49,12 @@ def getctime(file):
     t = datetime.datetime.fromtimestamp(v)
     return t
 
+def putother(file):
+    dp = os.path.join(folder, 'unsort')
+    print(dp)
+    os.makedirs(dp, exist_ok=True)
+    shutil.copy(file, dp, follow_symlinks=False)
+
 def analyze(file):
     print(file)
     tmp = file.lower()
@@ -61,7 +67,12 @@ def analyze(file):
             print(v)
             t = datetime.datetime.strptime(v, '%Y:%m:%d %H:%M:%S')
         else:
-            t = getctime(file)
+            # t = getctime(file)
+            putother(file)
+            return
+    elif tmp.endswith('png'):
+        putother(file)
+        return
     elif tmp.endswith('mov') or tmp.endswith('mp4'):
         t = getmovctime(file)
     else:
@@ -69,8 +80,9 @@ def analyze(file):
 
     # print(t)
     year = t.strftime("%Y")
+    month = t.strftime("%m")
     day = t.strftime("%Y%m%d")
-    dp = os.path.join(folder, year, day)
+    dp = os.path.join(folder, year,month, day)
     print(dp)
     os.makedirs(dp, exist_ok=True)
     shutil.copy(file, dp, follow_symlinks=False)
