@@ -204,7 +204,7 @@ class RssFetcher
                   body = item.content_encoded
                 end
                 if item.link != nil
-                  body = "<p>" + item.link +"</p><b>" + body 
+                  body = "<p>" + item.link + "</p><b>" + body 
                 end
                 #puts body
                 @mail.post_mail(feed.channel.title, itemUpdated, item.title, body)
