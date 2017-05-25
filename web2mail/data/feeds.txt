@@ -36,3 +36,5 @@ http://droidyue.com/atom.xml
 # https://blogs.windows.com/feed/
 # google blog
 http://feeds.feedburner.com/blogspot/MKuf
+# infoQ
+http://www.infoq.com/cn/feed

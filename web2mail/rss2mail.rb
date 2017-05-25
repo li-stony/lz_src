@@ -173,7 +173,11 @@ class RssFetcher
                 feedBuildDate = feed.channel.lastBuildDate.to_i
               elsif feed.channel.pubDate != nil
                 feedBuildDate = feed.channel.pubDate.to_i
+              else
+                # current time, if no any time content
+                feedBuildDate = Time.now.to_i
               end
+
               if feedBuildDate <= lastBuild
                 printf("[#{url}] not update\n")
                 next
