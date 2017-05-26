@@ -37,4 +37,4 @@ http://droidyue.com/atom.xml
 # google blog
 http://feeds.feedburner.com/blogspot/MKuf
 # infoQ
-http://www.infoq.com/cn/feed
+# http://www.infoq.com/cn/feed # too noisy
