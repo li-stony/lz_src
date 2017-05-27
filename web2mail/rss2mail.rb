@@ -36,7 +36,7 @@ class MailClient
     begin
       puts "connecting smtp ..."
       @client = Net::SMTP.new(@mail_config['smtp'], @mail_config['port'])
-      if @mail_config['ttl']
+      if @mail_config['tls']
         @client.enable_starttls
       end
       @client = @client.start(@mail_config['smtp'],
