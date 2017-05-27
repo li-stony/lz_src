@@ -1,6 +1,6 @@
 {
     "mail": {
-	"ttl":true,
+	"tls":true,
 	"smtp":"smtp.gmail.com",
 	"port":587,
 	"user":"cussyou@gmail.com",
