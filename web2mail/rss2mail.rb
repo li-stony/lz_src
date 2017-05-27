@@ -253,8 +253,8 @@ class RssFetcher
 
       puts "end at #{Time.now.iso8601}"
 
-    @hmgr.save()
-
+      @hmgr.save()
+    end
   end
 
   def load_feeds()
@@ -288,6 +288,7 @@ class RssFetcher
 end
 
 $proxy = nil
+
 if __FILE__ == $0
 
   STDOUT.sync = true
