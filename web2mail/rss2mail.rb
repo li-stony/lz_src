@@ -141,150 +141,122 @@ class RssFetcher
     puts 'start ...'
     @running = true
     @hmgr.load()
-    while @running
-      puts "begin at #{Time.now.iso8601}"
+
+    puts "begin at #{Time.now.iso8601}"
 
 
-      ok = @mail.start()
+    ok = @mail.start()
 
-      if ok
-        puts "smtp connected. checking feeds ..."
-        load_feeds()
-        if @feeds.count == 0
-          @mail.post_mail("rss2mail", Time.now.to_i, "Warning No Feeds", "<p>no feeds</p>")
+    if ok
+      puts "smtp connected. checking feeds ..."
+      load_feeds()
+      if @feeds.count == 0
+        @mail.post_mail("rss2mail", Time.now.to_i, "Warning No Feeds", "<p>no feeds</p>")
+      end
+      @feeds.each do |url|
+        if not @running
+          break
         end
-        @feeds.each do |url|
-          if not @running
-            break
-          end
-          begin
-            # url = 'http://livesino.net/feed'
-            #puts url
-            printf("fetching [%s]\n", url)
-            uri = URI(url)
-            res = Net::HTTP.get_response(uri)
-            rss = res.body()
-            feed = RSS::Parser.parse(rss)
-            lastBuild = @hmgr.get(url)
-            if feed.feed_type == 'rss'
-              # check if channel updated
-              feedBuildDate = 0
-              if feed.channel.lastBuildDate != nil
-                feedBuildDate = feed.channel.lastBuildDate.to_i
-              elsif feed.channel.pubDate != nil
-                feedBuildDate = feed.channel.pubDate.to_i
-              else
-                # current time, if no any time content
-                feedBuildDate = Time.now.to_i
-              end
-
-              if feedBuildDate <= lastBuild
-                printf("[#{url}] not update\n")
-                next
-              end
-              puts "Feed: [#{feed.channel.title}] update at <#{feedBuildDate}>"
-              items = Array.new
-              feed.items.each do |item|
-                items.insert(0, item)
-              end
-              items.each do |item|
-                itemUpdated = item.pubDate.to_i
-                if item.pubDate.to_i <= lastBuild
-                  puts "[#{item.title}] not updated"
-                  next
-                end
-
-                puts "post item: [#{item.title}]"
-                body = nil
-                if item.content_encoded == nil
-                  # some rss only support description property
-                  body = item.description
-                elsif
-                  # some rss write whole content here
-                  body = item.content_encoded
-                end
-                if item.link != nil
-                  body = "<p>" + item.link + "</p><b>" + body 
-                end
-                #puts body
-                @mail.post_mail(feed.channel.title, itemUpdated, item.title, body)
-              end
-              @hmgr.update(url, feedBuildDate)
-            elsif feed.feed_type == 'atom'
-              #puts feed.updated.methods.sort
-              t = feed.updated.content
-              feedBuildDate = t.to_i
-              if feedBuildDate <= lastBuild
-                printf("[#{url}] not update\n")
-                next
-              end
-              puts "Feed: [#{feed.title.content}] update at <#{feedBuildDate}>"
-              #puts feed.methods.sort
-              #puts feed.entry.methods.sort
-              items = Array.new
-              feed.entries.each do |item|
-                items.insert(0, item)
-              end
-              items.each do |item|
-
-                title = item.title.content
-                body = item.content.content
-                itemUpdated = item.updated.content.to_i
-                if itemUpdated <= lastBuild
-                  puts "[#{title}] not updated"
-                  next
-                end
-                
-                puts "post item #{title}"
-                @mail.post_mail(feed.title.content, itemUpdated, title, body)
-              end
-              @hmgr.update(url, feedBuildDate)
+        begin
+          # url = 'http://livesino.net/feed'
+          #puts url
+          printf("fetching [%s]\n", url)
+          uri = URI(url)
+          res = Net::HTTP.get_response(uri)
+          rss = res.body()
+          feed = RSS::Parser.parse(rss)
+          lastBuild = @hmgr.get(url)
+          if feed.feed_type == 'rss'
+            # check if channel updated
+            feedBuildDate = 0
+            if feed.channel.lastBuildDate != nil
+              feedBuildDate = feed.channel.lastBuildDate.to_i
+            elsif feed.channel.pubDate != nil
+              feedBuildDate = feed.channel.pubDate.to_i
             else
-              puts "invalid format [#{url}]"
+              # current time, if no any time content
+              feedBuildDate = Time.now.to_i
             end
 
-          rescue Exception => e
-            puts e.message
-            puts e.backtrace.inspect
+            if feedBuildDate <= lastBuild
+              printf("[#{url}] not update\n")
+              next
+            end
+            puts "Feed: [#{feed.channel.title}] update at <#{feedBuildDate}>"
+            items = Array.new
+            feed.items.each do |item|
+              items.insert(0, item)
+            end
+            items.each do |item|
+              itemUpdated = item.pubDate.to_i
+              if item.pubDate.to_i <= lastBuild
+                puts "[#{item.title}] not updated"
+                next
+              end
+
+              puts "post item: [#{item.title}]"
+              body = nil
+              if item.content_encoded == nil
+                # some rss only support description property
+                body = item.description
+              elsif
+                # some rss write whole content here
+                body = item.content_encoded
+              end
+              if item.link != nil
+                body = "<p>" + item.link + "</p><b>" + body 
+              end
+              #puts body
+              @mail.post_mail(feed.channel.title, itemUpdated, item.title, body)
+            end
+            @hmgr.update(url, feedBuildDate)
+          elsif feed.feed_type == 'atom'
+            #puts feed.updated.methods.sort
+            t = feed.updated.content
+            feedBuildDate = t.to_i
+            if feedBuildDate <= lastBuild
+              printf("[#{url}] not update\n")
+              next
+            end
+            puts "Feed: [#{feed.title.content}] update at <#{feedBuildDate}>"
+            #puts feed.methods.sort
+            #puts feed.entry.methods.sort
+            items = Array.new
+            feed.entries.each do |item|
+              items.insert(0, item)
+            end
+            items.each do |item|
+
+              title = item.title.content
+              body = item.content.content
+              itemUpdated = item.updated.content.to_i
+              if itemUpdated <= lastBuild
+                puts "[#{title}] not updated"
+                next
+              end
+              
+              puts "post item #{title}"
+              @mail.post_mail(feed.title.content, itemUpdated, title, body)
+            end
+            @hmgr.update(url, feedBuildDate)
+          else
+            puts "invalid format [#{url}]"
           end
 
-        end
-        @mail.stop()
-
-        puts "end at #{Time.now.iso8601}"
-        begin
-          # cnt = 1440 # too frequently
-          cnt = 4320
-          while @running && (cnt > 0)
-            sleep(5)
-            cnt = cnt - 1
-          end
-        rescue
-          next
+        rescue Exception => e
+          puts e.message
+          puts e.backtrace.inspect
         end
 
-      else
-        puts "smtp not ok, wait ..."
-        begin
-          cnt = 120
-          while @running && (cnt > 0)
-            sleep(5)
-            cnt = cnt - 1
-          end
-        rescue
-          next
-        end
       end
+      @mail.stop()
 
+      puts "end at #{Time.now.iso8601}"
 
-    end
     @hmgr.save()
-    puts 'stop.'
 
   end
-  def stop()
-    @running = false
-  end
+
   def load_feeds()
     begin
       puts 'load feeds ... '
@@ -318,16 +290,6 @@ end
 $proxy = nil
 if __FILE__ == $0
 
-  Signal.trap("TERM") do
-    if $proxy != nil
-      $proxy.stop()
-    end
-  end
-  Signal.trap("INT") do
-    if $proxy != nil
-      $proxy.stop()
-    end
-  end
   STDOUT.sync = true
   $proxy = RssFetcher.new
   $proxy.start()
