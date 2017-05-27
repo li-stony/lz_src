@@ -6,9 +6,16 @@ import urllib.request
 import re
 import smtplib
 import base64
+import os
+import os.path
+
+def getpath():
+    path = os.path.dirname(os.path.abspath(__file__))
+    return path
+
 
 def getlast():
-    f = open('data/yinhistory.txt')
+    f = open(getpath()+'/data/yinhistory.txt')
     line = f.read()
     line = line.rstrip('\n')
     m = re.match('(\S+)\s+(\S+)', line)
@@ -23,13 +30,13 @@ def updatelast(url, last):
         return
 
 
-    f = open('data/yinhistory.txt', 'w')
+    f = open(getpath()+'/data/yinhistory.txt', 'w')
     line = url + ' ' + last
     f.write(line)
 def sendmail(link, title, content):
     print(link, title)
     # config
-    fp = open('data/config.json', 'r')
+    fp = open(getpath()+'/data/config.json', 'r')
     config = json.load(fp, encoding="utf8")
     smtp = config['mail']['smtp']
     port = config['mail']['port']
