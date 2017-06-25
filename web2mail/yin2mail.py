@@ -9,6 +9,9 @@ import base64
 import os
 import os.path
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 def getpath():
     path = os.path.dirname(os.path.abspath(__file__))
     return path
@@ -54,7 +57,9 @@ To: {1}
 MIME-Version: 1.0
 Content-Type: text/html; charset=utf-8
 Subject: {2}
+<html><body>
 {3}
+</body></html>
 """
     bs = title.encode('utf8')
     # print(bs)
@@ -62,6 +67,7 @@ Subject: {2}
     # print(bs)
     title = bs.decode()
     title = '=?UTF-8?B?' + title + '?='
+    content = "<p>"+link+"</p>" + content
     msg = fmt.format(config['mail']['user'], config['mail']['to'], title, content )
     msg = msg.encode('utf8')
     server.sendmail(config['mail']['user'], config['mail']['to'], msg)
