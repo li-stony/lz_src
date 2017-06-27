@@ -5,7 +5,7 @@ echo "$d start" > /home/cussyou/logs/push.log
 
 # backup local data to vps
 # and remove deleted files
-rsync -r -v --delete /home/cussyou/lz_datas/notes/01todo root@lizl.me:/root/notes/ >> /home/cussyou/logs/push.log 2>&1
+rsync -r -v /home/cussyou/notes/ root@lizl.me:/root/notes/ >> /home/cussyou/logs/push.log 2>&1
 
 
 d=$(date +"%Y-%m-%d %H:%M")
