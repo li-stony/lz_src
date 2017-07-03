@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+d=$(date +"%Y-%m-%d %H:%M")
+echo "== $d start ==" 
+
 root="/home/cussyou"
 backdir="/media/cussyou/back"
 
@@ -8,5 +12,9 @@ echo ${items[@]}
 for i in ${items[@]}
 do
     echo $i
-    rsync -v -t -r "$root/$i" "$backdir"
+    rsync -v -t -r "$root/$i" "$backdir" 
 done
+
+d=$(date +"%Y-%m-%d %H:%M")
+echo "== $d end =="
+echo -e "\n\n"
