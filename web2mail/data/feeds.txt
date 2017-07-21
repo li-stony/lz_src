@@ -12,7 +12,7 @@ http://blog.sina.com.cn/rss/1660297672.xml
 #http://feed.williamlong.info/
 http://www.williamlong.info/rss.xml
 # 学而时嘻之
-# http://www.geekonomics10000.com/feed
+http://www.geekonomics10000.com/feed
 # 战隼的学习探索
 # http://feed.read.org.cn/
 http://feeds.feedburner.com/programthink
