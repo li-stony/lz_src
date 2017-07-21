@@ -2,7 +2,9 @@
 
 export http_proxy='http://127.0.0.1:8123'
 export https_proxy='http://127.0.0.1:8123'
-
+echo "------"
+t=$(date +"%Y-%m-%d %H:%M:%S")
+echo "$t start ..."
 # sync datas except picture and videos
 gdrive sync list --no-header |sed -E '/[[:space:]]+[0-9]{4,4}[[:space:]]+/d' | sed -E '/lz-picture/d'|sed -E '/lz-video/d' | while read line
 do
@@ -14,7 +16,7 @@ do
     num=0
     while [ $code -ne 0 ]
     do
-	echo "$item" | xargs -n 2 gdrive sync upload --chunksize 4096 --timeout 150
+	echo "$item" | xargs -n 2 /home/cussyou/opt/gopath/bin/gdrive sync upload --chunksize 4096 --timeout 150
 	code=$?
 	echo "sync exit: $code"
 	sleep 10
@@ -33,3 +35,7 @@ do
 	fi
     done    
 done
+
+t=$(date +"%Y-%m-%d %H:%M:%S")
+echo "$t end"
+

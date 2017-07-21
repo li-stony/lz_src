@@ -17,7 +17,7 @@ then
     echo "existed: $po"
 else
     echo "start: polipo"
-    polipo socksParentProxy=localhost:1080 logFile=~/logs/polipo.log &    
+    nohup polipo socksParentProxy=localhost:1080 logFile=~/logs/polipo.log &    
 fi
 
 #export http_proxy='http://localhost:8123'
