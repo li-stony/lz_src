@@ -36,6 +36,7 @@ def updatelast(url, last):
     f = open(getpath()+'/data/yinhistory.txt', 'w')
     line = url + ' ' + last
     f.write(line)
+    
 def sendmail(link, title, content):
     print(link, title)
     # config
