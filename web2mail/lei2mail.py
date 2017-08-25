@@ -97,7 +97,7 @@ def getitem(url):
 
 def gethome(url):
     oldlast = getlast()
-    print('old last:',oldlast)
+    print(url, 'old last:',oldlast)
     
     res = urllib.request.urlopen(url)
     body = res.read()
