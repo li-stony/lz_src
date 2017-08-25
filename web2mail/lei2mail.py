@@ -81,28 +81,16 @@ def getitem(url):
     res = urllib.request.urlopen(url)
     body = res.read()
     s = body.decode('utf8')
-    p = re.compile('<h2>(.+)</h2>')
+    p = re.compile('<h2>\s+(\S+)\s+<div class="post-date">\s+<span class="glyphicon glyphicon-time"></span>\s+(\S+)\s+</div>\s+</h2>', re.M|re.S)
     m = re.search(p, s)
     title = m.group(1)
+    time = m.group(2)
     startpos = m.start(0)
-    subs = s[startpos:]
-    endnum = 0
-    endpos = startpos
-    while endnum < 1:
-        m = re.search('(<div)|(</div>)', subs)
-        token = m.group(0)
-        endpos = endpos + m.end(0)
-        subs = subs[m.end(0):]
+    m = re.search('<b>本文链接：</b><a.+</a>', s)
+    endpos =  m.end(0)
+    content = s[startpos:endpos]
 
-        if token == '<div':
-            endnum = endnum-1    
-        elif token == '</div>':
-            endnum = endnum+1
-    
-    if endpos > startpos:
-        content = s[startpos:endpos-6]
-
-    # print(content)
+    print(content)
     # mail it
     sendmail(url, title, content)
 
@@ -122,14 +110,12 @@ def gethome(url):
         item = m.group(1)
         title = m.group(2)
         time = m.group(3)
-        print('parse item:', item)
+        print('parse item:', item, time)
         if time > newlast:
             newlast = time
-            
+
         if time > oldlast:
-            pass
-            # 
-            # getitem(url+item)
+            getitem("http://zhangtielei.com"+item)
         else:
             break
         # next
@@ -142,10 +128,10 @@ def gethome(url):
     
 if __name__ == '__main__' :
     # url
-    #fmt = 'http://zhangtielei.com/posts/page{0}/index.html'
-    #for i in range(2, 7):
-    #    url = fmt.format(8-i)
-    #    last = gethome(url)
+    fmt = 'http://zhangtielei.com/posts/page{0}/index.html'
+    for i in range(2, 7):
+        url = fmt.format(8-i)
+        last = gethome(url)
     # check first page
     url = 'http://zhangtielei.com'
     last = gethome(url)
