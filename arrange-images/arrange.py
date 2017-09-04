@@ -62,7 +62,8 @@ def analyze(file):
     if tmp.endswith('jpg') or tmp.endswith('jpeg') :
         im = Image.open(file)
         key = 36867
-        if key in im._getexif():
+        if im._getexif() != None:
+            if key in im._getexif():
             v = im._getexif()[key]
             print(v)
             t = datetime.datetime.strptime(v, '%Y:%m:%d %H:%M:%S')
@@ -70,6 +71,10 @@ def analyze(file):
             # t = getctime(file)
             putother(file)
             return
+        else:
+            putother(file)
+            return
+        
     elif tmp.endswith('png'):
         putother(file)
         return
