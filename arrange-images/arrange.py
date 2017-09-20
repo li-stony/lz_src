@@ -64,13 +64,13 @@ def analyze(file):
         key = 36867
         if im._getexif() != None:
             if key in im._getexif():
-            v = im._getexif()[key]
-            print(v)
-            t = datetime.datetime.strptime(v, '%Y:%m:%d %H:%M:%S')
-        else:
-            # t = getctime(file)
-            putother(file)
-            return
+                v = im._getexif()[key]
+                print(v)
+                t = datetime.datetime.strptime(v, '%Y:%m:%d %H:%M:%S')
+            else:
+                # t = getctime(file)
+                putother(file)
+                return
         else:
             putother(file)
             return
