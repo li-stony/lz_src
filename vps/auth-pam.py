@@ -2,7 +2,7 @@
 
 import sys
 
-keys = {'test':'testvbndfk'}
+keys = {'test':'testvbndfk'}testvbndfktestvbndfk
 
 def check_auth(path):
     f = open(path)
