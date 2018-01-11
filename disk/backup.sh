@@ -7,7 +7,7 @@ echo "== $d start =="
 root="/home/cussyou"
 backdir="/media/cussyou/back"
 
-items=('lz-datas' 'lz-src' 'lz-picture' 'lz-video' 'lz-pri' 'lz-books' 'lz-music')
+items=('lz-datas' 'lz-profile' 'lz-files' 'lz-src' 'lz-picture' 'lz-video' 'lz-pri' 'lz-books' 'lz-music')
 echo ${items[@]}
 for i in ${items[@]}
 do
