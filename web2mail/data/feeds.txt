@@ -20,7 +20,7 @@ http://blog.sina.com.cn/rss/1783658901.xml
 # 云风的 BLOG
 http://blog.codingnow.com/atom.xml
 # 知乎日报
-#http://feeds.feedburner.com/zhihu-daily
+http://feeds.feedburner.com/zhihu-daily
 # 我自己的微博？
 #http://sinacn.weibodangan.com/home_timeline/rss/3e501bd44e326b84f798ab7b0c825f2249b27bc8/
 http://www.ruanyifeng.com/blog/atom.xml
