@@ -42,7 +42,7 @@ def get_data():
     update_time = msg['time']['s']['cn']['time']
     # collection
     title = '{} {} AQI {}'.format(city, update_time, aqi)
-    body = '{} \nPM2.5: {}\nPM10: {}'.format(title, pm25, pm10)
+    body = '{} <br>\nPM2.5: {}<br>\nPM10: {}<br>\n'.format(title, pm25, pm10)
 
     return title,body
 
