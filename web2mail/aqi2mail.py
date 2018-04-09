@@ -16,7 +16,7 @@ def get_data():
         }
     )
 
-    res = urllib.request.urlopen(req, timeout=60)
+    res = urllib.request.urlopen(req, timeout=600)
     body = res.read()
     s = body.decode('utf8')
     json_data = json.loads(s)
