@@ -24,7 +24,7 @@ def get_data():
     # print(out)
     # city
     obs = json_data['rxs']['obs']
-    msg = obs[0]['msg']
+    msg = obs['msg']
     city = msg['city']['name']
     city_url = msg['city']['url']
     aqi = msg['aqi']
