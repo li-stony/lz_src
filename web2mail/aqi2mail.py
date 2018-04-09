@@ -16,7 +16,7 @@ def get_data():
         }
     )
 
-    res = urllib.request.urlopen(req)
+    res = urllib.request.urlopen(req, timeout=60)
     body = res.read()
     s = body.decode('utf8')
     json_data = json.loads(s)
@@ -39,7 +39,8 @@ def get_data():
         elif item['p'] == 'pm10':
             print(item)
             pm10 = item['v']
-    update_time = msg['time']['s']['cn']['time']
+    # update_time = msg['time']['s']['cn']['time']
+    update_time = msg['time']['s']['zh-CN']['time']
     # collection
     title = '{} {} AQI {}'.format(city, update_time, aqi)
     body = '{} <br>\nPM2.5: {}<br>\nPM10: {}<br>\n'.format(title, pm25, pm10)
