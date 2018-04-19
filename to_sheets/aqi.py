@@ -6,6 +6,7 @@ import re
 import time
 import sys
 
+
 def get_data(result):
     # beijing url
     url = 'https://api.waqi.info/api/feed/@1451/obs.cn.json'
