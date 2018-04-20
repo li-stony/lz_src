@@ -120,20 +120,24 @@ def main(folder, file_name):
     folder_id = create_folders(drive_service, folder)
     file_id = get_or_create_file(drive_service, file_name, folder_id, is_folder=False)
 
-    # read stdin and write to sheets
-    lines = sys.stdin.readlines()
-    body = dict()
-    body['values'] = []
-    datas = []
-    for line in lines:
-        cells = line.split('|||')
-        datas.append(cells)
-    body['values'] = datas
+
     sheets_service = discovery.build('sheets', 'v4', http=http)  
 
-    results = sheets_service.spreadsheets().values().append(spreadsheetId=file_id, range='A1', body=body, valueInputOption="USER_ENTERED").execute()
-
-    print('{} updated with rows {}'.format(results['spreadsheetId'], results['updates']['updatedRows']))
+    # read stdin and write to sheets
+    rows = 0
+    while True:
+        line = sys.stdin.readline()
+        if len(line) == 0:
+            break
+        body = dict()
+        body['values'] = []
+        datas = []
+        cells = line.split('|||')
+        datas.append(cells)
+        body['values'] = datas
+        results = sheets_service.spreadsheets().values().append(spreadsheetId=file_id, range='A1', body=body, valueInputOption="USER_ENTERED").execute()
+        rows = rows + 1
+    print('{} updated with rows {}'.format(file_id, rows))
 
 
 if __name__ == '__main__':
