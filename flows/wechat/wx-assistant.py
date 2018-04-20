@@ -9,19 +9,29 @@ import datetime
 
 data_folder = '.'
 
+
+def print_msg(msg):
+    nowstr = datetime.datetime.now().strftime("%Y%m%d-%H%M")
+    print(nowstr, msg['FromUserName'],  msg['ActualNickName'],msg['Text'], sep='|||')
+
 @itchat.msg_register([PICTURE, RECORDING, ATTACHMENT, VIDEO])
 def download_files(msg):
     nowstr = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     msg.download(os.path.join(data_folder, nowstr+msg['FileName']))
+    print(nowstr, msg['FromUserName'],  msg['ActualNickName'], msg['FileName'], sep='|||')
 
 @itchat.msg_register(TEXT, isGroupChat=True)
-def text_reply(msg):
-    if(msg.isAt):    #判断是否有人@自己
-    #如果有人@自己，就发一个消息告诉对方我已经收到了信息
-    #itchat.send_msg("我已经收到了来自{0}的消息，实际内容为{1}".format(msg['ActualNickName'],msg['Text']),toUserName=msg['FromUserName'])
-    
+def group_msg(msg):
+    #print(msg)
+    print('recv file msg:', msg['FileName', file=sys.stderr])
+    print_msg(msg)
 
-    
+@itchat.msg_register(TEXT, isGroupChat=False)
+def normal_msg(msg):
+    #print(msg)
+    print('recv text msg:', msg['Text'], file=sys.stderr)
+    print_msg(msg)
+
 def main(folder):
     global data_folder
     data_folder = folder
