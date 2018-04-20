@@ -26,7 +26,7 @@ except ImportError:
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-CLIENT_SECRET_FILE = 'to_sheets_key.json'
+CLIENT_SECRET_FILE = 'gflows_key.json'
 APPLICATION_NAME = 'to sheets'
 
 
@@ -122,12 +122,14 @@ def main(folder, file_name):
 
     # read stdin and write to sheets
     lines = sys.stdin.readlines()
-    datas = list()
-    for line in lines:
-        datas.append(line)
-    sheets_service = discovery.build('sheets', 'v4', http=http)
     body = dict()
-    body['values'] = [datas]
+    body['values'] = []
+    datas = []
+    for line in lines:
+        cells = line.split('|||')
+        datas.append(cells)
+    body['values'] = datas
+    sheets_service = discovery.build('sheets', 'v4', http=http)  
 
     results = sheets_service.spreadsheets().values().append(spreadsheetId=file_id, range='A1', body=body, valueInputOption="USER_ENTERED").execute()
 
