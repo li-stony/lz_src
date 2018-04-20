@@ -23,7 +23,7 @@ def download_files(msg):
 @itchat.msg_register(TEXT, isGroupChat=True)
 def group_msg(msg):
     #print(msg)
-    print('recv file msg:', msg['FileName', file=sys.stderr])
+    print('recv file msg:', msg['FileName'], file=sys.stderr)
     print_msg(msg)
 
 @itchat.msg_register(TEXT, isGroupChat=False)
