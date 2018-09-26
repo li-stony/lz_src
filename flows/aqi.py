@@ -61,16 +61,16 @@ def get_data(result):
         return False
 
 def main():
-    print(datetime.datetime.now())
+    print(datetime.datetime.now(), file=sys.stderr)
     # get json data from aqi
     for i in range(0,3):
         result = dict()
         ok = get_data(result)
         if ok:
-            print(result['update_time'])
-            print(result['city'])
-            print(result['aqi'])
-            print(result['pm25'])
+            print(result['update_time'], end="|||")
+            print(result['city'], end="|||")
+            print(result['aqi'], end="|||")
+            print(result['pm25'], end="|||")
             print(result['pm10'])
             break
         else:
