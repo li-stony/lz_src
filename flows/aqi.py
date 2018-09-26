@@ -61,7 +61,7 @@ def get_data(result):
         return False
 
 def main():
-    print(datetime.datetime.now(), file=sys.stderr)
+    print(datetime.datetime.now(), end="|||")
     # get json data from aqi
     for i in range(0,3):
         result = dict()
